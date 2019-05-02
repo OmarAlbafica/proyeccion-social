@@ -7,8 +7,14 @@ import PropTypes from "prop-types";
 
 import DatosPerfil from "./DatosPerfil";
 import DatosBeneficiario from "./DatosBeneficiario";
+import GuiaDeTrabajo2 from "./GuiaDeTrabajo2";
+import GuiaDeTrabajo1 from "./GuiaDeTrabajo1";
+import RequerimientoCompra from "./RequerimientoCompra";
+import Otros from "./Otros";
+import Chalecos from "./Chalecos";
+import Resumen from "./Resumen";
 
-class AddClient extends Component {
+class NuevoPerfil extends Component {
   state = {
     pagina: 1,
     datosPerfil: {
@@ -37,12 +43,17 @@ class AddClient extends Component {
     }
   }
 
-  pagina = setPagina => this.setState({ pagina: setPagina });
+  pagina = setPagina => {
+    this.setState({ pagina: setPagina })
+  };
 
   deleteFromTable = (nombre, index) => {
-    const arr = this.state[nombre];
-    arr.splice(index, 1);
-    this.setState({ [nombre]: arr });
+    const array = [...this.state.datosBeneficiarios];
+
+    if (index !== -1) {
+      array.splice(index, 1);
+      this.setState({ datosBeneficiarios: array });
+    }
   }
 
   pushToTable = (nombre, datos) => {
@@ -70,21 +81,60 @@ class AddClient extends Component {
   render() {
     const { pagina, datosPerfil, datosBeneficiarios } = this.state;
     if (pagina === 1) {
-      return <DatosPerfil data={datosPerfil} onSubmit={this.changeState} />
-    }
-    if (pagina === 2) {
-      return <DatosBeneficiario
-        data={datosBeneficiarios}
+      return <DatosPerfil
+        data={datosPerfil}
         onSubmit={this.changeState}
         pagina={this.pagina}
-        deleteFromTable={this.deleteFromTable}
-        pushToTable={this.pushToTable}
       />
-    }
+    } else
+      if (pagina === 2) {
+        return <DatosBeneficiario
+          data={datosBeneficiarios}
+          onSubmit={this.changeState}
+          pagina={this.pagina}
+          deleteFromTable={this.deleteFromTable}
+          pushToTable={this.pushToTable}
+        />
+      } else if (pagina === 7) {
+        return <GuiaDeTrabajo1
+          data={datosBeneficiarios}
+          onSubmit={this.changeState}
+          pagina={this.pagina}
+        />
+      } else if (pagina === 8) {
+        return <GuiaDeTrabajo2
+          data={datosBeneficiarios}
+          onSubmit={this.changeState}
+          pagina={this.pagina}
+        />
+      } else if (pagina === 9) {
+        return <RequerimientoCompra
+          data={datosBeneficiarios}
+          onSubmit={this.changeState}
+          pagina={this.pagina}
+        />
+      } else if (pagina === 10) {
+        return <Otros
+          data={datosBeneficiarios}
+          onSubmit={this.changeState}
+          pagina={this.pagina}
+        />
+      } else if (pagina === 11) {
+        return <Chalecos
+          data={datosBeneficiarios}
+          onSubmit={this.changeState}
+          pagina={this.pagina}
+        />
+      } else if (pagina === 12) {
+        return <Resumen
+          pagina={this.pagina}
+        />
+      }
+    console.log("no debería llegar acá")
   }
 }
 
-AddClient.propTypes = {
+NuevoPerfil.propTypes = {
   firestore: PropTypes.object.isRequired,
   settings: PropTypes.object.isRequired
 };
@@ -95,4 +145,4 @@ export default compose(
     settings,
     roles: ordered.roles
   }))
-)(AddClient);
+)(NuevoPerfil);
