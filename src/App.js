@@ -13,6 +13,7 @@ import Solicitudes from "./components/Perfiles/Solicitudes";
 import AddGuiaTrabajo from "./components/AddGuiasDeTrabajo";
 import AddTransporte from "./components/AddTransporte";
 import AddChalecos from "./components/AddChalecos";
+import AddSeguimiento from "./components/AddSeguimiento";
 import RequerimientoCompra from "./components/RequerimientoCompra";
 import Login from "./components/auth/Login";
 
@@ -44,6 +45,11 @@ class App extends Component {
                   exact
                   path="/perfiles/3453453236/solicitudes/transporte"
                   component={UserIsAuthenticated(AddTransporte)}
+                />
+                <Route
+                  exact
+                  path="/perfiles/3453453236/solicitudes/seguimiento"
+                  component={UserIsAuthenticated(AddSeguimiento)}
                 />
                 <Route
                   exact

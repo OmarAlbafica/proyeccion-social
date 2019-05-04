@@ -79,7 +79,7 @@ class Clients extends Component {
               Añadir solicitudes
             </div>
             <div className="card-body">
-              <Link className="btn btn-primary" to="/perfiles/3453453236/solicitudes/trasporte/">
+              <Link className="btn btn-primary" to="/perfiles/3453453236/solicitudes/transporte">
                 Transporte
               </Link>{" "}
               <Link className="btn btn-primary" to="/perfiles/3453453236/solicitudes/guia-trabajo/">
