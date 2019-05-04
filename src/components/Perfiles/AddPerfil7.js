@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 
 
-export default class DatosBeneficiario extends Component {
+export default class AddPerfil7 extends Component {
   state = {
     nombre: "",
     telefono: "",
@@ -32,78 +32,78 @@ export default class DatosBeneficiario extends Component {
     const beneficiarios = this.props.data;
     const { nombre, telefono, correo, institucion, descripcion } = this.state;
 
+    const ejemplo = [
+      {
+        actividad: "Charla",
+        nvisitas: 3,
+        ciclo: "01-2019",
+        objetivo: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate aperiam quisquam corrupti vitae tempore. Exercitationem quibusdam quis nemo iure, possimus necessitatibus modi unde quidem sapiente rem quaerat, amet ab maxime."
+      },
+      {
+        actividad: "Charla",
+        nvisitas: 3,
+        ciclo: "01-2019",
+        objetivo: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate aperiam quisquam corrupti vitae tempore. Exercitationem quibusdam quis nemo iure, possimus necessitatibus modi unde quidem sapiente rem quaerat, amet ab maxime."
+      },
+      {
+        actividad: "Charla",
+        nvisitas: 3,
+        ciclo: "01-2019",
+        objetivo: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate aperiam quisquam corrupti vitae tempore. Exercitationem quibusdam quis nemo iure, possimus necessitatibus modi unde quidem sapiente rem quaerat, amet ab maxime."
+      }
+    ]
+
     const añadirBeneficiario = (
       <div className="card-body">
         <div className="row">
           <div className="col-md-6">
             <div className="form-group">
-              <label htmlFor="firstName">Nombre de Representante</label>
+              <label>Actividad:</label>
               <input
                 type="text"
                 className="form-control"
-                name="nombre"
+                name="id"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={nombre}
+                value={""}
               />
             </div>
           </div>
           <div className="col-md-6">
             <div className="form-group">
-              <label htmlFor="lastName">Telefono de Representante</label>
+              <label>N de visitas:</label>
               <input
                 type="text"
                 className="form-control"
-                name="telefono"
+                name="id"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={telefono}
+                value={""}
               />
             </div>
           </div>
         </div>
 
-        <div className="row">
-          <div className="col-md-6">
-            <div className="form-group">
-              <label htmlFor="email">Correo Electronico</label>
-              <input
-                type="text"
-                className="form-control"
-                name="correo"
-                onChange={this.onChange}
-                value={correo}
-              />
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="form-group">
-              <label htmlFor="phone">Institución</label>
-              <input
-                type="text"
-                className="form-control"
-                name="institucion"
-                required
-                onChange={this.onChange}
-                value={institucion}
-              />
-            </div>
+        <div className="col-md-4">
+          <div className="form-group">
+            <label>Ciclo a Ejecutar:</label>
+            <select className="browser-default custom-select">
+              <option>Elija el ciclo</option>
+              <option value="1">Option 1</option>
+              <option value="2">Option 2</option>
+              <option value="3">Option 3</option>
+            </select>
           </div>
         </div>
 
         <div className="form-group">
-          <label htmlFor="phone">Descripcion</label>
-          <input
-            type="text"
-            className="form-control"
-            name="descripcion"
-            required
-            onChange={this.onChange}
-            value={descripcion}
-          />
+          <label>Objetivo:</label>
+          <textarea name="" id="" rows="5" className="form-control"></textarea>
         </div>
+
+
         <div className="form-group">
           <div className="col-md-4 float-right">
             <button
@@ -120,38 +120,34 @@ export default class DatosBeneficiario extends Component {
       <div>
         <div className="row">
           <div className="col-md-6">
-            <button onClick={() => this.props.pagina(1)} className="btn btn-link">
+            <button onClick={() => this.props.pagina(6)} className="btn btn-link">
               <i className="fas fa-arrow-circle-left" /> Volver atrás
             </button>
           </div>
         </div>
         <br />
-        <h2>Añadir nuevo perfil (2/9)</h2>
+        <h2>Añadir nuevo perfil (7/9)</h2>
         <br />
         <div className="card">
-          <div className="card-header">Añadir Datos de Beneficiarios</div>
-          {beneficiarios.length < 1 ? añadirBeneficiario : (<div className="card-body">
+          <div className="card-header"> Descripción de Acciones a Ejecutar</div>
+          {ejemplo.length <= 0 ? añadirBeneficiario : (<div className="card-body">
             {añadirBeneficiario}
             <br /><br /><br /><br />
             <table className=" table table-striped">
               <thead className="thead-inverse">
                 <tr>
-                  <th>Nombre</th>
-                  <th>Telefono</th>
-                  <th>Correo</th>
-                  <th>Institución</th>
-                  <th>Descripción</th>
+                  <th>Actividad</th>
+                  <th>N de Visitas</th>
+                  <th>Ciclo</th>
                   <th />
                 </tr>
               </thead>
               <tbody>
-                {beneficiarios.map((beneficiario, i) => (
+                {ejemplo.map((beneficiario, i) => (
                   <tr key={i}>
-                    <td>{beneficiario.nombre}</td>
-                    <td>{beneficiario.telefono}</td>
-                    <td>{beneficiario.correo}</td>
-                    <td>{beneficiario.institucion}</td>
-                    <td>{beneficiario.descripcion}</td>
+                    <td>{beneficiario.actividad}</td>
+                    <td>{beneficiario.nvisitas}</td>
+                    <td>{beneficiario.ciclo}</td>
                     <td>
                       <button className="btn btn-danger" onClick={() => this.props.deleteFromTable("datosBeneficiarios", i)}>
                         Borrar
@@ -163,7 +159,7 @@ export default class DatosBeneficiario extends Component {
             </table>
 
             <div className="form-group">
-              <button className="btn btn-primary btn-block" onClick={() => this.props.pagina(7)}>
+              <button className="btn btn-primary btn-block" onClick={() => this.props.pagina(8)}>
                 Siguiente
                 </button>
             </div>

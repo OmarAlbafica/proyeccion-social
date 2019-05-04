@@ -40,33 +40,28 @@ class Clients extends Component {
     const ejemplo = [
       {
         estado: "Pendiente",
-        facultad: "Informática y CA",
-        escuela: "Ciencias Aplicadas",
+        tipo: "Transporte",
         titulo: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo, earum rerum! Modi",
         linea: "Arte y Arquitectura destilando amor"
       },
       {
         estado: "Rechazado",
-        facultad: "Informática y CA",
-        escuela: "Ciencias Aplicadas",
+        tipo: "Guias de trabajo",
         titulo: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo, earum rerum! Modi",
         linea: "Arte y Arquitectura destilando amor"
       },
       {
         estado: "Aceptado",
-        facultad: "Informática y CA",
-        escuela: "Ciencias Aplicadas",
+        tipo: "Requerimiento de compras",
         titulo: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo, earum rerum! Modi",
         linea: "Arte y Arquitectura destilando amor"
       },
       {
         estado: "Cambios solicitados",
-        cambios: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo, earum rerum! Modi Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo, earum rerum! Modi",
-        facultad: "Informática y CA",
-        escuela: "Ciencias Aplicadas",
+        tipo: "Transporte",
         titulo: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo, earum rerum! Modi",
         linea: "Arte y Arquitectura destilando amor"
-      }
+      },
     ]
     const { clients } = this.props;
     if (clients) {
@@ -79,15 +74,35 @@ class Clients extends Component {
             </h2>
           </div>
 
+          <div className="card">
+            <div className="card-header">
+              Añadir solicitudes
+            </div>
+            <div className="card-body">
+              <Link className="btn btn-primary" to="/perfiles/3453453236/solicitudes/trasporte/">
+                Transporte
+              </Link>{" "}
+              <Link className="btn btn-primary" to="/perfiles/3453453236/solicitudes/guia-trabajo/">
+                Guia de trabajo
+              </Link>{" "}<Link className="btn btn-primary" to="/perfiles/3453453236/solicitudes/requerimiento-compra/">
+                Requerimiento de Compra
+              </Link>{" "}
+              <Link className="btn btn-primary" to="/perfiles/3453453236/solicitudes/chalecos/">
+                Chalecos
+              </Link>{" "}
+              <Link className="btn btn-primary" to="/perfiles/3453453236/solicitudes/seguimiento/">
+                Seguimiento
+              </Link>
+            </div>
+          </div>
+
           <table className=" table table-striped">
             <thead className="thead-inverse">
               <tr>
                 <th>Estado</th>
-                <th>Facultad</th>
-                <th>Escuela</th>
-                <th>Titulo</th>
+                <th>Nombre</th>
+                <th>Tipo</th>
                 <th>Linea de Proyección</th>
-                <th />
                 <th />
                 <th />
               </tr>
@@ -130,10 +145,9 @@ class Clients extends Component {
                       </div>
                     </td>}
                   <td>
-                    {valor.facultad}
+                    {valor.titulo}
                   </td>
-                  <td>{valor.escuela}</td>
-                  <td>{valor.titulo}</td>
+                  <td>{valor.tipo}</td>
                   <td>{valor.linea}</td>
                   <td>
                     <Link
@@ -144,26 +158,6 @@ class Clients extends Component {
                       <pre></pre>
                       Editar
                     </Link>
-                  </td>
-                  <td>
-                    {valor.estado === "Aceptado" ?
-                      <a
-                        href={`/perfiles/3453453236/solicitudes`}
-                        className="btn btn-info btn-sm"
-                      >
-                        <i className="fas fa-anchor"></i>
-                        <pre></pre>
-                        Solicitudes
-                    </a>
-                      :
-                      <div
-                        className="btn btn-sm"
-                      >
-                        <i className="fas fa-anchor"></i>
-                        <pre></pre>
-                        Solicitudes
-                      </div>
-                    }
                   </td>
                   <td>
                     <Link

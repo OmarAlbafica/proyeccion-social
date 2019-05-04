@@ -9,9 +9,11 @@ import store from "./store";
 //Components
 import AppNavbar from "./components/layouts/AppNavbar";
 import Dashboard from "./components/layouts/Dashboard";
-import AddClient from "./components/Perfiles/NuevoPerfil";
-import ClientDetails from "./components/Perfiles/ClientDetails";
-import EditClient from "./components/Perfiles/EditClient";
+import Solicitudes from "./components/Perfiles/Solicitudes";
+import AddGuiaTrabajo from "./components/AddGuiasDeTrabajo";
+import AddTransporte from "./components/AddTransporte";
+import AddChalecos from "./components/AddChalecos";
+import RequerimientoCompra from "./components/RequerimientoCompra";
 import Login from "./components/auth/Login";
 
 class App extends Component {
@@ -30,28 +32,33 @@ class App extends Component {
                 />
                 <Route
                   exact
+                  path="/perfiles/3453453236/solicitudes"
+                  component={UserIsAuthenticated(Solicitudes)}
+                />
+                <Route
+                  exact
+                  path="/perfiles/3453453236/solicitudes/guia-trabajo"
+                  component={UserIsAuthenticated(AddGuiaTrabajo)}
+                />
+                <Route
+                  exact
+                  path="/perfiles/3453453236/solicitudes/transporte"
+                  component={UserIsAuthenticated(AddTransporte)}
+                />
+                <Route
+                  exact
+                  path="/perfiles/3453453236/solicitudes/chalecos"
+                  component={UserIsAuthenticated(AddChalecos)}
+                />
+                <Route
+                  exact
+                  path="/perfiles/3453453236/solicitudes/requerimiento-compra"
+                  component={UserIsAuthenticated(RequerimientoCompra)}
+                />
+                <Route
+                  exact
                   path="/"
                   component={UserIsAuthenticated(Dashboard)}
-                />
-                <Route
-                  exact
-                  path="/perfiles/nuevo"
-                  component={UserIsAuthenticated(AddClient)}
-                />
-                <Route
-                  exact
-                  path="/perfiles/:id"
-                  component={UserIsAuthenticated(ClientDetails)}
-                />
-                <Route
-                  exact
-                  path="/perfiles/editar/:id"
-                  component={UserIsAuthenticated(EditClient)}
-                />
-                <Route
-                  exact
-                  path="/perfiles/auditar/:id"
-                  component={UserIsAuthenticated(EditClient)}
                 />
               </Switch>
             </div>

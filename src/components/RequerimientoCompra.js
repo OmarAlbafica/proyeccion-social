@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 
 
-export default class DatosBeneficiario extends Component {
+export default class AddPerfil3 extends Component {
   state = {
     nombre: "",
     telefono: "",
@@ -32,78 +32,143 @@ export default class DatosBeneficiario extends Component {
     const beneficiarios = this.props.data;
     const { nombre, telefono, correo, institucion, descripcion } = this.state;
 
+    const ejemplo = [
+      {
+        cantidad: "Juan Perez",
+        descripcion: "Negocios",
+        caracteristicas: "coordinador",
+        proveedor: "Siman",
+        preciou: "10.20"
+      },
+      {
+        cantidad: "Juan Perez",
+        descripcion: "Negocios",
+        caracteristicas: "coordinador",
+        proveedor: "Siman",
+        preciou: "10.20"
+      },
+      {
+        cantidad: "Juan Perez",
+        descripcion: "Negocios",
+        caracteristicas: "coordinador",
+        proveedor: "Siman",
+        preciou: "10.20"
+      }
+    ]
+
     const añadirBeneficiario = (
       <div className="card-body">
+        <h4>Detalles de la compra</h4>
         <div className="row">
           <div className="col-md-6">
             <div className="form-group">
-              <label htmlFor="firstName">Nombre de Representante</label>
+              <label>Fecha:</label>
               <input
                 type="text"
                 className="form-control"
-                name="nombre"
+                name="id"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={nombre}
+                value={""}
               />
             </div>
           </div>
           <div className="col-md-6">
             <div className="form-group">
-              <label htmlFor="lastName">Telefono de Representante</label>
+              <label>Observaciones:</label>
               <input
                 type="text"
                 className="form-control"
-                name="telefono"
+                name="id"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={telefono}
+                value={""}
+              />
+            </div>
+          </div>
+
+          <br /><br /><hr />
+          <div className="col-md-12">
+            <h3>Agregar nuevo item</h3>
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+              <label>Cantidad:</label>
+              <input
+                type="text"
+                className="form-control"
+                name="id"
+                minlenght="2"
+                required
+                onChange={this.onChange}
+                value={""}
+              />
+            </div>
+          </div>
+
+          <div className="col-md-6">
+            <div className="form-group">
+              <label>Caracteristicas:</label>
+              <input
+                type="text"
+                className="form-control"
+                name="id"
+                minlenght="2"
+                required
+                onChange={this.onChange}
+                value={""}
+              />
+            </div>
+          </div>
+
+          <div className="col-md-6">
+            <div className="form-group">
+              <label>Descripcion:</label>
+              <input
+                type="text"
+                className="form-control"
+                name="id"
+                minlenght="2"
+                required
+                onChange={this.onChange}
+                value={""}
+              />
+            </div>
+          </div>
+
+          <div className="col-md-6">
+            <div className="form-group">
+              <label>Proveedor:</label>
+              <input
+                type="text"
+                className="form-control"
+                name="id"
+                minlenght="2"
+                required
+                onChange={this.onChange}
+                value={""}
+              />
+            </div>
+          </div>
+
+          <div className="col-md-6">
+            <div className="form-group">
+              <label>Precio Unitario:</label>
+              <input
+                type="text"
+                className="form-control"
+                name="id"
+                minlenght="2"
+                required
+                onChange={this.onChange}
+                value={""}
               />
             </div>
           </div>
         </div>
 
-        <div className="row">
-          <div className="col-md-6">
-            <div className="form-group">
-              <label htmlFor="email">Correo Electronico</label>
-              <input
-                type="text"
-                className="form-control"
-                name="correo"
-                onChange={this.onChange}
-                value={correo}
-              />
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="form-group">
-              <label htmlFor="phone">Institución</label>
-              <input
-                type="text"
-                className="form-control"
-                name="institucion"
-                required
-                onChange={this.onChange}
-                value={institucion}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="phone">Descripcion</label>
-          <input
-            type="text"
-            className="form-control"
-            name="descripcion"
-            required
-            onChange={this.onChange}
-            value={descripcion}
-          />
-        </div>
         <div className="form-group">
           <div className="col-md-4 float-right">
             <button
@@ -120,38 +185,37 @@ export default class DatosBeneficiario extends Component {
       <div>
         <div className="row">
           <div className="col-md-6">
-            <button onClick={() => this.props.pagina(1)} className="btn btn-link">
+            <button onClick={() => this.props.pagina(2)} className="btn btn-link">
               <i className="fas fa-arrow-circle-left" /> Volver atrás
             </button>
           </div>
         </div>
         <br />
-        <h2>Añadir nuevo perfil (2/9)</h2>
+        <h2>Añadir nueva solicitud de compra</h2>
         <br />
         <div className="card">
-          <div className="card-header">Añadir Datos de Beneficiarios</div>
-          {beneficiarios.length < 1 ? añadirBeneficiario : (<div className="card-body">
+          {ejemplo.length <= 0 ? añadirBeneficiario : (<div className="card-body">
             {añadirBeneficiario}
             <br /><br /><br /><br />
             <table className=" table table-striped">
               <thead className="thead-inverse">
                 <tr>
-                  <th>Nombre</th>
-                  <th>Telefono</th>
-                  <th>Correo</th>
-                  <th>Institución</th>
+                  <th>Cantidad</th>
                   <th>Descripción</th>
+                  <th>Caracteristicas</th>
+                  <th>Proveedor</th>
+                  <th>Precio Unitario</th>
                   <th />
                 </tr>
               </thead>
               <tbody>
-                {beneficiarios.map((beneficiario, i) => (
+                {ejemplo.map((beneficiario, i) => (
                   <tr key={i}>
-                    <td>{beneficiario.nombre}</td>
-                    <td>{beneficiario.telefono}</td>
-                    <td>{beneficiario.correo}</td>
-                    <td>{beneficiario.institucion}</td>
+                    <td>{beneficiario.cantidad}</td>
                     <td>{beneficiario.descripcion}</td>
+                    <td>{beneficiario.caracteristicas}</td>
+                    <td>{beneficiario.proveedor}</td>
+                    <td>{beneficiario.preciou}</td>
                     <td>
                       <button className="btn btn-danger" onClick={() => this.props.deleteFromTable("datosBeneficiarios", i)}>
                         Borrar
@@ -163,9 +227,9 @@ export default class DatosBeneficiario extends Component {
             </table>
 
             <div className="form-group">
-              <button className="btn btn-primary btn-block" onClick={() => this.props.pagina(7)}>
-                Siguiente
-                </button>
+              <Link to="/perfiles/3453453236/solicitudes" className="btn btn-primary btn-block">
+                Enviar
+              </Link>
             </div>
           </div>)}
         </div>

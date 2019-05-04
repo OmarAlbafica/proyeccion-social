@@ -1,13 +1,13 @@
 {
-  "name": "clientpanel",
+  "name": "proyeccion-social",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://kalaston.github.io/clientpanel",
   "dependencies": {
     "classnames": "^2.2.6",
     "firebase": "^5.11.0",
     "gh-pages": "^2.0.1",
     "react": "^16.8.6",
+    "react-bootstrap-modal": "^4.2.0",
     "react-dom": "^16.8.6",
     "react-redux": "^5.1.1",
     "react-redux-firebase": "^2.2.6",
@@ -15,8 +15,7 @@
     "react-scripts": "2.1.1",
     "redux": "^4.0.1",
     "redux-auth-wrapper": "^2.1.0",
-    "redux-firestore": "^0.5.8",
-    "sha.js": "^2.4.11"
+    "redux-firestore": "^0.5.8"
   },
   "scripts": {
     "start": "react-scripts start",
