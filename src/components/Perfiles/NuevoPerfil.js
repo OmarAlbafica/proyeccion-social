@@ -18,7 +18,8 @@ import VerPerfil from "./VerPerfil";
 
 class NuevoPerfil extends Component {
   state = {
-    pagina: 1,
+    pagina: 2,
+    facultades: [],
     window1: {
       id: "",
       facultad: "",
@@ -29,10 +30,19 @@ class NuevoPerfil extends Component {
       cantidadBeneficiarios: "",
       duracionCiclos: ""
     },
-    datosBeneficiarios: [
+    window2: {
 
-    ]
+    },
+    datosBeneficiarios: []
   };
+
+  componentDidMount() {
+    const { firestore } = this.props;
+
+    firestore.collection("facultades").get()
+    .then(querySnapshot => 
+      this.setState({ facultades: querySnapshot.docs.map(doc => doc.data())}));
+  }
 
   onChange = e =>
     this.setState({
@@ -84,11 +94,12 @@ class NuevoPerfil extends Component {
   };
 
   render() {
-    console.log(this.state);  
     const { pagina, window1, datosBeneficiarios } = this.state;
+    console.log(this.state);
     if (pagina === 1) {
       return <AddPerfil1
         data={window1}
+        facultades={this.state.facultades}
         onSubmit={this.changeState}
         pagina={this.pagina}
         onError={this.onError}
@@ -98,6 +109,7 @@ class NuevoPerfil extends Component {
         return <AddPerfil2
           data={window1}
           onSubmit={this.changeState}
+          facultades={this.state.facultades}
           pagina={this.pagina}
           deleteFromTable={this.deleteFromTable}
           pushToTable={this.pushToTable}

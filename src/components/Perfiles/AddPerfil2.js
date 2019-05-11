@@ -4,33 +4,51 @@ import { Link } from 'react-router-dom'
 
 export default class AddPerfil2 extends Component {
   state = {
-    nombre: "",
-    telefono: "",
-    correo: "",
-    institucion: "",
-    descripcion: "",
-    beneficiarios: []
+    facultad: "",
+    escuela: "",
+    asignatura: "",
+    asignaturas: []
   }
 
-  onChange = e => this.setState({ [e.target.name]: e.target.value });
+  onChange = e => {
+    if (e.target.name === "facultad") {
+      this.setState({[e.target.name]: e.target.value, escuela: "", asignatura: ""});
+    } else if (e.target.name === "escuela") {
+      this.setState({[e.target.name]: e.target.value, asignatura: ""});
+    } else this.setState({[e.target.name]: e.target.value})
+  };
 
-  enviar = () => {
-    const { nombre, telefono, correo, institucion, descripcion } = this.state;
-    this.props.pushToTable("datosBeneficiarios", {
-      nombre, telefono, correo, institucion, descripcion
-    })
-    this.setState({
-      nombre: "",
-      telefono: "",
-      correo: "",
-      institucion: "",
-      descripcion: ""
-    })
+  componentDidMount() {
+    this.setState({...this.state, ...this.props.data});
   }
+
+  pushToTable = () => {
+    const {facultad, escuela, asignatura, asignaturas} = this.state;
+    if (facultad === "" || escuela === "" || asignatura === "") { return;}
+    asignaturas.push({facultad, escuela, asignatura});
+    this.setState({ asignaturas, facultad: "", escuela: "", asignatura: "" });
+  }
+
+  deleteFromTable = index => {
+
+    const { asignaturas } = this.state;
+    if (index !== -1) {
+      asignaturas.splice(index, 1);
+      this.setState({ asignaturas });
+    }
+  }
+
+  onSubmit = () => {
+    if (this.state.asignaturas.length > 0) {
+      this.props.onSubmit("window2", this.state.asignaturas)
+      this.props.pagina(3)
+    }
+  }
+
 
   render() {
-    const beneficiarios = this.props.data;
-    const { nombre, telefono, correo, institucion, descripcion } = this.state;
+    const { facultades } = this.props;
+    const { facultad, escuela } = this.state;
 
     const ejemplo = [
       {
@@ -50,54 +68,6 @@ export default class AddPerfil2 extends Component {
       }
     ]
 
-    const añadirBeneficiario = (
-      <div className="card-body">
-
-        <div className="form-group">
-          <label>Facultad:</label>
-          <select className="browser-default custom-select">
-            <option>Elija su facultad</option>
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-            <option value="3">Option 3</option>
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label>Escuela:</label>
-          <select className="browser-default custom-select">
-            <option>Elija su Escuela</option>
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-            <option value="3">Option 3</option>
-          </select>
-        </div>
-
-        <br /><br />
-        <hr />
-        <br />
-        <div className="form-group">
-          <label>Asignatura:</label>
-          <select className="browser-default custom-select">
-            <option>Elija su Asignatura</option>
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-            <option value="3">Option 3</option>
-          </select>
-        </div>
-
-        <div className="form-group">
-          <div className="col-md-4 float-right">
-            <button
-              onClick={this.enviar}
-              className="btn btn-secondary btn-block"
-            >
-              Ingresar
-          </button>
-          </div>
-        </div>
-      </div>
-    )
     return (
       <div>
         <div className="row">
@@ -111,23 +81,76 @@ export default class AddPerfil2 extends Component {
         <h2>Añadir nuevo perfil (2/9)</h2>
         <br />
         <div className="card">
-          <div className="card-header">Añadir Datos de Beneficiarios</div>
-          {ejemplo.length <= 0 ? añadirBeneficiario : (<div className="card-body">
-            {añadirBeneficiario}
+          <div className="card-header">Asignaturas que desarrollarán el proyecto o actividad de proyección social</div>
+          <div className="card-body">
+          <div className="card-body">
+
+            <div className="form-group">
+              <label>Facultad:</label>
+              <select 
+                className="browser-default custom-select" 
+                name="facultad" 
+                onChange={this.onChange}
+                value={this.state.facultad}
+              >
+                <option value="">Seleccionar facultad</option>
+                {facultades && facultades.map((facultad, i) => 
+                <option key={i} value={facultad.nombre}>{facultad.nombre}</option>)}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label>Escuela:</label>
+              <select className="browser-default custom-select" name="escuela" onChange={this.onChange}>
+                <option value="">Seleccionar Escuela</option>
+                {facultad !== "" && facultades && facultades
+                  .filter(facu => facu.nombre === facultad)[0]
+                  . escuelas.map((escuela, i) => 
+                    <option key={i} value={escuela.nombre}>{escuela.nombre}</option>)
+                }
+              </select>
+            </div>
+            <div className="form-group">
+              <label>Asignatura:</label>
+              <select className="browser-default custom-select" name="asignatura" onChange={this.onChange}>
+                <option value="">Elija su Asignatura</option>
+                {facultad !== "" && facultades && escuela !== "" && facultades
+                   .filter(facu => facu.nombre === facultad)[0]
+                   .escuelas.filter(escul => escul.nombre === escuela)[0].materias
+                   .map((asignatura, i) => <option key={i} value={asignatura}>{asignatura}</option>)
+                }
+              </select>
+            </div>
+
+            <div className="form-group">
+              <div className="col-md-4 float-right">
+                <button
+                  onClick={this.pushToTable}
+                  className="btn btn-secondary btn-block"
+                >
+                  Ingresar
+              </button>
+              </div>
+            </div>
+            </div>
             <br /><br /><br /><br />
             <table className=" table table-striped">
               <thead className="thead-inverse">
                 <tr>
-                  <th>Asignaturas</th>
+                  <th>Facultad</th>
+                  <th>Escuela</th>
+                  <th>Asignatura</th>
                   <th />
                 </tr>
               </thead>
               <tbody>
-                {ejemplo.map((beneficiario, i) => (
+                {this.state.asignaturas.length > 0 && this.state.asignaturas.map((asignatura, i) => (
                   <tr key={i}>
-                    <td>{beneficiario.asignatura}</td>
+                    <td>{asignatura.facultad}</td>
+                    <td>{asignatura.escuela}</td>
+                    <td>{asignatura.asignatura}</td>
                     <td>
-                      <button className="btn btn-danger" onClick={() => this.props.deleteFromTable("datosBeneficiarios", i)}>
+                      <button className="btn btn-danger" onClick={() => this.deleteFromTable(i)}>
                         Borrar
                         </button>
                     </td>
@@ -137,11 +160,11 @@ export default class AddPerfil2 extends Component {
             </table>
 
             <div className="form-group">
-              <button className="btn btn-primary btn-block" onClick={() => this.props.pagina(3)}>
+              <button className="btn btn-primary btn-block" onClick={this.onSubmit}>
                 Siguiente
                 </button>
             </div>
-          </div>)}
+          </div>
         </div>
       </div>
     )
