@@ -185,9 +185,9 @@ export default class AddPerfil3 extends Component {
       <div>
         <div className="row">
           <div className="col-md-6">
-            <button onClick={() => this.props.pagina(2)} className="btn btn-link">
+            <Link to="/perfiles/3453453236/solicitudes" className="btn btn-link">
               <i className="fas fa-arrow-circle-left" /> Volver atrás
-            </button>
+            </Link>
           </div>
         </div>
         <br />

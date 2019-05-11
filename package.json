@@ -9,6 +9,7 @@
     "react": "^16.8.6",
     "react-bootstrap-modal": "^4.2.0",
     "react-dom": "^16.8.6",
+    "react-notifications-component": "^1.1.1",
     "react-redux": "^5.1.1",
     "react-redux-firebase": "^2.2.6",
     "react-router-dom": "^4.3.1",

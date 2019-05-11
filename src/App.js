@@ -12,6 +12,7 @@ import Dashboard from "./components/layouts/Dashboard";
 import Solicitudes from "./components/Perfiles/Solicitudes";
 import AddGuiaTrabajo from "./components/AddGuiasDeTrabajo";
 import AddTransporte from "./components/AddTransporte";
+import AddPerfil from "./components/Perfiles/NuevoPerfil";
 import AddChalecos from "./components/AddChalecos";
 import AddSeguimiento from "./components/AddSeguimiento";
 import RequerimientoCompra from "./components/RequerimientoCompra";
@@ -30,6 +31,11 @@ class App extends Component {
                   exact
                   path="/login"
                   component={UserIsNotAuthenticated(Login)}
+                />
+                <Route
+                  exact
+                  path="/perfiles/nuevo"
+                  component={UserIsAuthenticated(AddPerfil)}
                 />
                 <Route
                   exact

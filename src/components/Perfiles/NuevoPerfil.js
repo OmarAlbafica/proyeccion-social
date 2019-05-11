@@ -19,13 +19,15 @@ import VerPerfil from "./VerPerfil";
 class NuevoPerfil extends Component {
   state = {
     pagina: 1,
-    datosPerfil: {
+    window1: {
       id: "",
-      fecha: "",
+      facultad: "",
+      escuela: "",
+      lineaProyeccion: "",
       titulo: "",
-      estudiantesFemeninos: "",
-      estudiantesMasculinos: "",
-      justificación: ""
+      descripcionBeneficiarios: "",
+      cantidadBeneficiarios: "",
+      duracionCiclos: ""
     },
     datosBeneficiarios: [
 
@@ -37,12 +39,12 @@ class NuevoPerfil extends Component {
       [e.target.name]: e.target.value
     });
 
-  changeState = (pagina, data) => {
-    if (pagina === 1) {
-      this.setState({ datosPerfil: data, pagina: 2 });
-    } else if (pagina === 2) {
-      this.setState({ datosBeneficiarios: data, pagina: 3 });
-    }
+  changeState = (nombre, data) => {
+    this.setState({ [nombre]: data});
+  }
+
+  onError = (mensaje) => {
+    
   }
 
   pagina = setPagina => {
@@ -82,21 +84,24 @@ class NuevoPerfil extends Component {
   };
 
   render() {
-    const { pagina, datosPerfil, datosBeneficiarios } = this.state;
+    console.log(this.state);  
+    const { pagina, window1, datosBeneficiarios } = this.state;
     if (pagina === 1) {
       return <AddPerfil1
-        data={datosPerfil}
+        data={window1}
         onSubmit={this.changeState}
         pagina={this.pagina}
+        onError={this.onError}
       />
     } else
       if (pagina === 2) {
         return <AddPerfil2
-          data={datosBeneficiarios}
+          data={window1}
           onSubmit={this.changeState}
           pagina={this.pagina}
           deleteFromTable={this.deleteFromTable}
           pushToTable={this.pushToTable}
+          onError={this.onError}
         />
       } else if (pagina === 3) {
         return <AddPerfil3
@@ -105,6 +110,7 @@ class NuevoPerfil extends Component {
           pagina={this.pagina}
           deleteFromTable={this.deleteFromTable}
           pushToTable={this.pushToTable}
+          onError={this.onError}
         />
       } else if (pagina === 4) {
         return <AddPerfil4
@@ -113,6 +119,7 @@ class NuevoPerfil extends Component {
           pagina={this.pagina}
           deleteFromTable={this.deleteFromTable}
           pushToTable={this.pushToTable}
+          onError={this.onError}
         />
       } else if (pagina === 5) {
         return <AddPerfil5
@@ -121,6 +128,7 @@ class NuevoPerfil extends Component {
           pagina={this.pagina}
           deleteFromTable={this.deleteFromTable}
           pushToTable={this.pushToTable}
+          onError={this.onError}
         />
       } else if (pagina === 6) {
         return <AddPerfil6
@@ -129,6 +137,7 @@ class NuevoPerfil extends Component {
           pagina={this.pagina}
           deleteFromTable={this.deleteFromTable}
           pushToTable={this.pushToTable}
+          onError={this.onError}
         />
       } else if (pagina === 7) {
         return <AddPerfil7
@@ -137,6 +146,7 @@ class NuevoPerfil extends Component {
           pagina={this.pagina}
           deleteFromTable={this.deleteFromTable}
           pushToTable={this.pushToTable}
+          onError={this.onError}
         />
       } else if (pagina === 8) {
         return <AddPerfil8
@@ -145,6 +155,7 @@ class NuevoPerfil extends Component {
           pagina={this.pagina}
           deleteFromTable={this.deleteFromTable}
           pushToTable={this.pushToTable}
+          onError={this.onError}
         />
       } else if (pagina === 9) {
         return <AddPerfil9
@@ -153,6 +164,7 @@ class NuevoPerfil extends Component {
           pagina={this.pagina}
           deleteFromTable={this.deleteFromTable}
           pushToTable={this.pushToTable}
+          onError={this.onError}
         />
       } else return <VerPerfil
         data={datosBeneficiarios}
