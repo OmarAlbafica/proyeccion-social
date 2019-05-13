@@ -14,11 +14,21 @@ export default class AddPerfil1 extends Component {
     duracionCiclos: ""
   }
 
-  onChange = e => this.setState({ [e.target.name]: e.target.value });
-
   componentDidMount() {
     const { id, facultad, titulo, escuela, lineaProyeccion, descripcionBeneficiarios,cantidadBeneficiarios, duracionCiclos } = this.props.data;
     this.setState({ id, facultad, titulo, escuela, lineaProyeccion, descripcionBeneficiarios,cantidadBeneficiarios, duracionCiclos });
+  }
+
+  onChange = e => {
+    if (e.target.name === "facultad") {
+      this.setState({[e.target.name]: e.target.value, escuela: "", asignatura: ""});
+    } else if (e.target.name === "escuela") {
+      this.setState({[e.target.name]: e.target.value, asignatura: ""});
+    } else this.setState({[e.target.name]: e.target.value})
+  };
+
+  componentDidMount() {
+    this.setState({...this.state, ...this.props.data});
   }
 
   onSubmit = () => {
@@ -34,6 +44,9 @@ export default class AddPerfil1 extends Component {
   }
 
   render() {
+
+    const { facultad, escuela } = this.state;
+    const { facultades } = this.props;
     return (
       <div>
         <div className="row">
@@ -65,21 +78,27 @@ export default class AddPerfil1 extends Component {
 
             <div className="form-group">
               <label>Facultad:</label>
-              <select name="facultad" className="browser-default custom-select" onChange={this.onChange}>
-                <option>Elija su facultad</option>
-                <option value="1">Option 1</option>
-                <option value="2">Option 2</option>
-                <option value="3">Option 3</option>
+              <select 
+                className="browser-default custom-select" 
+                name="facultad" 
+                onChange={this.onChange}
+                value={this.state.facultad}
+              >
+                <option value="">Seleccionar facultad</option>
+                {facultades && facultades.map((facultad, i) => 
+                <option key={i} value={facultad.nombre}>{facultad.nombre}</option>)}
               </select>
             </div>
 
             <div className="form-group">
               <label>Escuela:</label>
-              <select name="escuela" className="browser-default custom-select" onChange={this.onChange}>
-                <option>Elija su Escuela</option>
-                <option value="1">Option 1</option>
-                <option value="2">Option 2</option>
-                <option value="3">Option 3</option>
+              <select className="browser-default custom-select" name="escuela" onChange={this.onChange}>
+                <option value="">Seleccionar Escuela</option>
+                {facultad !== "" && facultades && facultades
+                  .filter(facu => facu.nombre === facultad)[0]
+                  . escuelas.map((escuela, i) => 
+                    <option key={i} value={escuela.nombre}>{escuela.nombre}</option>)
+                }
               </select>
             </div>
 

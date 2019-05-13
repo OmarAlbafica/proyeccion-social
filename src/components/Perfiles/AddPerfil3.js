@@ -4,96 +4,64 @@ import { Link } from 'react-router-dom'
 
 export default class AddPerfil3 extends Component {
   state = {
+    escuela: "",
     nombre: "",
-    telefono: "",
-    correo: "",
-    institucion: "",
-    descripcion: "",
-    beneficiarios: []
+    check: false,
+    tipo: "",
+    docentes: []
   }
 
-  onChange = e => this.setState({ [e.target.name]: e.target.value });
-
-  enviar = () => {
-    const { nombre, telefono, correo, institucion, descripcion } = this.state;
-    this.props.pushToTable("datosBeneficiarios", {
-      nombre, telefono, correo, institucion, descripcion
-    })
-    this.setState({
-      nombre: "",
-      telefono: "",
-      correo: "",
-      institucion: "",
-      descripcion: ""
-    })
+  componentDidMount() {
+    const docentes = this.props.data;
+    this.setState({docentes});
   }
+
+  onChange = e => {
+    if (e.target.value === "Seleccionar Escuela") {
+      this.setState({ [e.target.name]: "" });
+    } else if (e.target.name === "check") {
+      if (this.state.check !== false) {
+        this.setState({check: !this.state.check, tipo: "acompañante"});
+      } else {
+        this.setState({check: !this.state.check, tipo: "coordinador"});
+      }
+      
+    } else {
+      this.setState({ [e.target.name]: e.target.value });
+    }
+  };
+
+  componentDidMount() {
+		this.setState({...this.props.data});
+	}
+
+  pushToTable = () => {
+		const {nombre, docentes, escuela, check, tipo} = this.state;
+		if (nombre === "" || escuela === "") { return;}
+		if (escuela === "Elija su escuela") {this.setState({docente: ""})};
+		docentes.push({nombre, tipo, escuela});
+		this.setState({ docentes, nombre: "", check: false, tipo: "acompañante"});
+  }
+  
+  deleteFromTable = index => {
+		const { docentes } = this.state;
+		if (index !== -1) {
+			docentes.splice(index, 1);
+			this.setState({ docentes });
+		}
+	}
+
+  onSubmit = () => {
+		if (this.state.docentes.length > 0) {
+			this.props.onSubmit("window3", {docentes: this.state.docentes});
+			this.props.pagina(4);
+		}
+	}
 
   render() {
-    const beneficiarios = this.props.data;
-    const { nombre, telefono, correo, institucion, descripcion } = this.state;
+    const { facultades, facultad } = this.props;
+    const { docentes } = this.state;
 
-    const ejemplo = [
-      {
-        nombre: "Juan Perez",
-        escuela: "Negocios",
-        tipo: "coordinador"
-      },
-      {
-        nombre: "Godinez",
-        escuela: "Negocios",
-        tipo: "acompañante"
-      },
-      {
-        nombre: "adfaldsfad",
-        escuela: "Negocios",
-        tipo: "acompañante"
-      }
-    ]
-
-    const añadirBeneficiario = (
-      <div className="card-body">
-        <h3>Nombre del docente coordinador y acompañantes</h3>
-        <div className="form-group">
-          <label>Escuela:</label>
-          <select className="browser-default custom-select">
-            <option>Elija su Escuela</option>
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-            <option value="3">Option 3</option>
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label>Docente:</label>
-          <input
-            type="text"
-            className="form-control"
-            name="id"
-            minlenght="2"
-            required
-            onChange={this.onChange}
-            value={""}
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Rol (checkear solo si es coordinador):</label>
-          <br />
-          <input type="checkbox" name="vehicle1" value="Bike" /> {" "}Coordinador
-        </div>
-
-        <div className="form-group">
-          <div className="col-md-4 float-right">
-            <button
-              onClick={this.enviar}
-              className="btn btn-secondary btn-block"
-            >
-              Ingresar
-          </button>
-          </div>
-        </div>
-      </div>
-    )
     return (
       <div>
         <div className="row">
@@ -108,8 +76,63 @@ export default class AddPerfil3 extends Component {
         <br />
         <div className="card">
           <div className="card-header"> Información de responsables del proyecto o actividad de proyección social</div>
-          {ejemplo.length <= 0 ? añadirBeneficiario : (<div className="card-body">
-            {añadirBeneficiario}
+          <div className="card-body">
+          <div className="card-body">
+        <h3>Nombre del docente coordinador y acompañantes</h3>
+        <div className="form-group">
+          <label>Escuela:</label>
+          <select className="browser-default custom-select" name="escuela" onChange={this.onChange}>
+                <option value="">Seleccionar Escuela</option>
+                {facultad !== "" && facultades && facultades
+                  .filter(facu => facu.nombre === facultad)[0]
+                  . escuelas.map((escuela, i) => 
+                    <option key={i} value={escuela.nombre}>{escuela.nombre}</option>)
+                }
+              </select>
+        </div>
+
+        <div className="form-group">
+          <label>Docente:</label>
+          <input
+            type="text"
+            className="form-control"
+            name="nombre"
+            minlenght="2"
+            required
+            onChange={this.onChange}
+            value={this.state.nombre}
+          />
+        </div>
+
+        {
+          docentes.length === 0 && <div className="form-group">
+          <label>Rol (checkear solo si es coordinador):</label>
+          <br />
+          <input type="checkbox" checked={this.state.check} onChange={this.onChange} name="check"/> Coordinador
+        </div>
+        }
+
+        {
+          docentes.length > 0 && docentes.filter(docente => docente.tipo === "coordinador").length <= 0 ?
+          <div className="form-group">
+            <label>Rol (checkear solo si es coordinador):</label>
+            <br />
+            <input type="checkbox" checked={this.state.check} onChange={this.onChange} name="check"/> Coordinador
+          </div>
+          : null
+        }
+
+        <div className="form-group">
+          <div className="col-md-4 float-right">
+            <button
+              onClick={this.pushToTable}
+              className="btn btn-secondary btn-block"
+            >
+              Ingresar
+          </button>
+          </div>
+        </div>
+      </div>
             <br /><br /><br /><br />
             <table className=" table table-striped">
               <thead className="thead-inverse">
@@ -121,13 +144,13 @@ export default class AddPerfil3 extends Component {
                 </tr>
               </thead>
               <tbody>
-                {ejemplo.map((beneficiario, i) => (
+                {docentes.length > 0 && docentes.map((docente, i) => (
                   <tr key={i}>
-                    <td>{beneficiario.nombre}</td>
-                    <td>{beneficiario.escuela}</td>
-                    <td>{beneficiario.tipo}</td>
+                    <td>{docente.nombre}</td>
+                    <td>{docente.escuela}</td>
+                    <td>{docente.tipo}</td>
                     <td>
-                      <button className="btn btn-danger" onClick={() => this.props.deleteFromTable("datosBeneficiarios", i)}>
+                      <button className="btn btn-danger" onClick={() => this.deleteFromTable(i)}>
                         Borrar
                         </button>
                     </td>
@@ -137,11 +160,11 @@ export default class AddPerfil3 extends Component {
             </table>
 
             <div className="form-group">
-              <button className="btn btn-primary btn-block" onClick={() => this.props.pagina(4)}>
+              <button className="btn btn-primary btn-block" onClick={this.onSubmit}>
                 Siguiente
                 </button>
             </div>
-          </div>)}
+          </div>
         </div>
       </div>
     )
