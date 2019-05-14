@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
-
 
 export default class AddPerfil3 extends Component {
   state = {
@@ -30,10 +28,6 @@ export default class AddPerfil3 extends Component {
       this.setState({ [e.target.name]: e.target.value });
     }
   };
-
-  componentDidMount() {
-		this.setState({...this.props.data});
-	}
 
   pushToTable = () => {
 		const {nombre, docentes, escuela, check, tipo} = this.state;

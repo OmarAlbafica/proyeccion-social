@@ -4,56 +4,46 @@ import { Link } from 'react-router-dom'
 
 export default class AddPerfil4 extends Component {
   state = {
-    nombre: "",
-    telefono: "",
-    correo: "",
+    nombreRepresentante: "",
+    correoRepresentante: "",
+    telefonoRepresentante: "",
     institucion: "",
-    descripcion: "",
-    beneficiarios: []
+    representantes: []
   }
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
 
-  enviar = () => {
-    const { nombre, telefono, correo, institucion, descripcion } = this.state;
-    this.props.pushToTable("datosBeneficiarios", {
-      nombre, telefono, correo, institucion, descripcion
-    })
-    this.setState({
-      nombre: "",
-      telefono: "",
-      correo: "",
-      institucion: "",
-      descripcion: ""
-    })
+  componentDidMount() {
+    const {representantes} = this.props.data;
+    this.setState({representantes});
   }
 
+  pushToTable = () => {
+		const {nombreRepresentante, correoRepresentante, telefonoRepresentante, institucion, representantes} = this.state;
+		if (nombreRepresentante === "" || correoRepresentante === "" || telefonoRepresentante === "" || institucion === "") { return;}
+		representantes.push({nombreRepresentante, correoRepresentante, telefonoRepresentante, institucion});
+		this.setState({ representantes, nombreRepresentante: "", correoRepresentante: "", telefonoRepresentante: "", institucion: ""});
+  }
+  
+  deleteFromTable = index => {
+		const { representantes } = this.state;
+		if (index !== -1) {
+			representantes.splice(index, 1);
+			this.setState({ representantes });
+		}
+  }
+  
+  onSubmit = () => {
+		if (this.state.representantes.length > 0) {
+			this.props.onSubmit("window4", {representantes: this.state.representantes});
+			this.props.pagina(5);
+		}
+	}
+
   render() {
-    const beneficiarios = this.props.data;
-    const { nombre, telefono, correo, institucion, descripcion } = this.state;
+    const {nombreRepresentante, correoRepresentante, telefonoRepresentante, institucion, representantes} = this.state;
 
-    const ejemplo = [
-      {
-        nombre: "Juan Perez",
-        telefono: "823739484",
-        correo: "mail@mail.com",
-        institucion: "USAID"
-      },
-      {
-        nombre: "Juan Perez",
-        telefono: "823739484",
-        correo: "mail@mail.com",
-        institucion: "USAID"
-      },
-      {
-        nombre: "Juan Perez",
-        telefono: "823739484",
-        correo: "mail@mail.com",
-        institucion: "USAID"
-      }
-    ]
-
-    const añadirBeneficiario = (
+    const conditionalRender = (
       <div className="card-body">
         <h3>Información de contacto de Beneficiario</h3>
 
@@ -64,11 +54,11 @@ export default class AddPerfil4 extends Component {
               <input
                 type="text"
                 className="form-control"
-                name="id"
+                name="nombreRepresentante"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={""}
+                value={nombreRepresentante}
               />
             </div>
 
@@ -77,11 +67,11 @@ export default class AddPerfil4 extends Component {
               <input
                 type="text"
                 className="form-control"
-                name="id"
+                name="telefonoRepresentante"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={""}
+                value={telefonoRepresentante}
               />
             </div>
 
@@ -92,11 +82,11 @@ export default class AddPerfil4 extends Component {
               <input
                 type="text"
                 className="form-control"
-                name="id"
+                name="correoRepresentante"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={""}
+                value={correoRepresentante}
               />
             </div>
             <div className="form-group">
@@ -104,11 +94,11 @@ export default class AddPerfil4 extends Component {
               <input
                 type="text"
                 className="form-control"
-                name="id"
+                name="institucion"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={""}
+                value={institucion}
               />
             </div>
           </div>
@@ -119,7 +109,7 @@ export default class AddPerfil4 extends Component {
         <div className="form-group">
           <div className="col-md-4 float-right">
             <button
-              onClick={this.enviar}
+              onClick={this.pushToTable}
               className="btn btn-secondary btn-block"
             >
               Ingresar
@@ -142,8 +132,8 @@ export default class AddPerfil4 extends Component {
         <br />
         <div className="card">
           <div className="card-header"> Información de responsables del proyecto o actividad de proyección social</div>
-          {ejemplo.length <= 0 ? añadirBeneficiario : (<div className="card-body">
-            {añadirBeneficiario}
+          {representantes.length <= 0 ? conditionalRender : (<div className="card-body">
+            {conditionalRender}
             <br /><br /><br /><br />
             <table className=" table table-striped">
               <thead className="thead-inverse">
@@ -156,14 +146,14 @@ export default class AddPerfil4 extends Component {
                 </tr>
               </thead>
               <tbody>
-                {ejemplo.map((beneficiario, i) => (
+                {representantes.map((representante, i) => (
                   <tr key={i}>
-                    <td>{beneficiario.nombre}</td>
-                    <td>{beneficiario.telefono}</td>
-                    <td>{beneficiario.correo}</td>
-                    <td>{beneficiario.institucion}</td>
+                    <td>{representante.nombreRepresentante}</td>
+                    <td>{representante.telefonoRepresentante}</td>
+                    <td>{representante.correoRepresentante}</td>
+                    <td>{representante.institucion}</td>
                     <td>
-                      <button className="btn btn-danger" onClick={() => this.props.deleteFromTable("datosBeneficiarios", i)}>
+                      <button className="btn btn-danger" onClick={() => this.deleteFromTable(i)}>
                         Borrar
                         </button>
                     </td>
@@ -173,7 +163,7 @@ export default class AddPerfil4 extends Component {
             </table>
 
             <div className="form-group">
-              <button className="btn btn-primary btn-block" onClick={() => this.props.pagina(5)}>
+              <button className="btn btn-primary btn-block" onClick={this.onSubmit}>
                 Siguiente
                 </button>
             </div>

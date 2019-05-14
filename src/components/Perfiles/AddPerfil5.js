@@ -1,37 +1,25 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
 
 
 export default class AddPerfil4 extends Component {
   state = {
-    nombre: "",
-    telefono: "",
-    correo: "",
-    institucion: "",
-    descripcion: "",
-    beneficiarios: []
+    justificacion: "",
+  }
+
+  componentDidMount() {
+    this.setState({justificacion: this.props.data.justificacion});
   }
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
 
-  enviar = () => {
-    const { nombre, telefono, correo, institucion, descripcion } = this.state;
-    this.props.pushToTable("datosBeneficiarios", {
-      nombre, telefono, correo, institucion, descripcion
-    })
-    this.setState({
-      nombre: "",
-      telefono: "",
-      correo: "",
-      institucion: "",
-      descripcion: ""
-    })
-  }
+  onSubmit = () => {
+		if (this.state.justificacion  !== "") {
+			this.props.onSubmit("window5", {justificacion: this.state.justificacion});
+			this.props.pagina(6);
+		}
+	}
 
   render() {
-    const beneficiarios = this.props.data;
-    const { nombre, telefono, correo, institucion, descripcion } = this.state;
-
     return (
       <div>
         <div className="row">
@@ -49,11 +37,11 @@ export default class AddPerfil4 extends Component {
           <div className="card-body">
             <div className="form-group">
               <label>Justificación:</label>
-              <textarea rows="10" className="form-control"></textarea>
+              <textarea name="justificacion" onChange={this.onChange} rows="10" value={this.state.justificacion} className="form-control" />
             </div>
 
             <div className="form-group">
-              <button className="btn btn-primary btn-block" onClick={() => this.props.pagina(6)}>
+              <button className="btn btn-primary btn-block" onClick={this.onSubmit}>
                 Siguiente
                 </button>
             </div>
