@@ -4,54 +4,60 @@ import { Link } from 'react-router-dom'
 
 export default class AddPerfil7 extends Component {
   state = {
-    nombre: "",
-    telefono: "",
-    correo: "",
-    institucion: "",
-    descripcion: "",
-    beneficiarios: []
+    actividad: "",
+    nVisitas: "",
+    ciclo: "",
+    objetivo: "",
+    actividades: []
   }
 
-  onChange = e => this.setState({ [e.target.name]: e.target.value });
+  onChange = e => {
+    if (e.target.value === "Seleccionar Ciclo") {
+      this.setState({ [e.target.name]: "" });
+    } else {
+      this.setState({ [e.target.name]: e.target.value });
+    }
+  };
 
-  enviar = () => {
-    const { nombre, telefono, correo, institucion, descripcion } = this.state;
-    this.props.pushToTable("datosBeneficiarios", {
-      nombre, telefono, correo, institucion, descripcion
-    })
-    this.setState({
-      nombre: "",
-      telefono: "",
-      correo: "",
-      institucion: "",
-      descripcion: ""
-    })
+  componentDidMount() {
+    const { actividades } = this.props.data;
+    this.setState({ actividades });
   }
+
+  onSubmit = () => {
+		if (this.state.actividades.length > 0) {
+			this.props.onSubmit("window7", {actividades: this.state.actividades});
+			this.props.pagina(8);
+		}
+	}
+
+  pushToTable = () => {
+		const { actividad, nVisitas, ciclo, objetivo, actividades } = this.state;
+    if (actividad === "" || 
+      nVisitas === "" || 
+      ciclo === "" || 
+      objetivo === "") { return;}
+		actividades.push({actividad, nVisitas, ciclo, objetivo});
+		this.setState({ 
+      actividades, 
+      actividad: "", 
+      nVisitas: "", 
+      ciclo: "", 
+      objetivo: "" 
+    });
+  }
+  
+  deleteFromTable = index => {
+		const { actividades } = this.state;
+		if (index !== -1) {
+			actividades.splice(index, 1);
+			this.setState({ actividades });
+		}
+	}
 
   render() {
-    const beneficiarios = this.props.data;
-    const { nombre, telefono, correo, institucion, descripcion } = this.state;
-
-    const ejemplo = [
-      {
-        actividad: "Charla",
-        nvisitas: 3,
-        ciclo: "01-2019",
-        objetivo: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate aperiam quisquam corrupti vitae tempore. Exercitationem quibusdam quis nemo iure, possimus necessitatibus modi unde quidem sapiente rem quaerat, amet ab maxime."
-      },
-      {
-        actividad: "Charla",
-        nvisitas: 3,
-        ciclo: "01-2019",
-        objetivo: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate aperiam quisquam corrupti vitae tempore. Exercitationem quibusdam quis nemo iure, possimus necessitatibus modi unde quidem sapiente rem quaerat, amet ab maxime."
-      },
-      {
-        actividad: "Charla",
-        nvisitas: 3,
-        ciclo: "01-2019",
-        objetivo: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate aperiam quisquam corrupti vitae tempore. Exercitationem quibusdam quis nemo iure, possimus necessitatibus modi unde quidem sapiente rem quaerat, amet ab maxime."
-      }
-    ]
+    const { actividades } = this.state;
+    const { ciclos } = this.props;
 
     const añadirBeneficiario = (
       <div className="card-body">
@@ -62,11 +68,11 @@ export default class AddPerfil7 extends Component {
               <input
                 type="text"
                 className="form-control"
-                name="id"
+                name="actividad"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={""}
+                value={this.state.actividad}
               />
             </div>
           </div>
@@ -76,11 +82,11 @@ export default class AddPerfil7 extends Component {
               <input
                 type="text"
                 className="form-control"
-                name="id"
+                name="nVisitas"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={""}
+                value={this.state.nVisitas}
               />
             </div>
           </div>
@@ -89,25 +95,25 @@ export default class AddPerfil7 extends Component {
         <div className="col-md-4">
           <div className="form-group">
             <label>Ciclo a Ejecutar:</label>
-            <select className="browser-default custom-select">
-              <option>Elija el ciclo</option>
-              <option value="1">Option 1</option>
-              <option value="2">Option 2</option>
-              <option value="3">Option 3</option>
+            <select className="browser-default custom-select" name="ciclo" onChange={this.onChange}>
+                <option value="">Seleccionar Ciclo</option>
+                {ciclos.length > 0 && ciclos.map((ciclo, i) => 
+                    <option key={i} value={ciclo}>{ciclo}</option>)
+                }
             </select>
           </div>
         </div>
 
         <div className="form-group">
           <label>Objetivo:</label>
-          <textarea name="" id="" rows="5" className="form-control"></textarea>
+          <textarea name="objetivo" onChange={this.onChange} value={this.state.objetivo} rows="5" className="form-control"/>
         </div>
 
 
         <div className="form-group">
           <div className="col-md-4 float-right">
             <button
-              onClick={this.enviar}
+              onClick={this.pushToTable}
               className="btn btn-secondary btn-block"
             >
               Ingresar
@@ -130,7 +136,7 @@ export default class AddPerfil7 extends Component {
         <br />
         <div className="card">
           <div className="card-header"> Descripción de Acciones a Ejecutar</div>
-          {ejemplo.length <= 0 ? añadirBeneficiario : (<div className="card-body">
+          {actividades.length <= 0 ? añadirBeneficiario : (<div className="card-body">
             {añadirBeneficiario}
             <br /><br /><br /><br />
             <table className=" table table-striped">
@@ -143,13 +149,13 @@ export default class AddPerfil7 extends Component {
                 </tr>
               </thead>
               <tbody>
-                {ejemplo.map((beneficiario, i) => (
+                {actividades.length > 0 && actividades.map((act, i) => (
                   <tr key={i}>
-                    <td>{beneficiario.actividad}</td>
-                    <td>{beneficiario.nvisitas}</td>
-                    <td>{beneficiario.ciclo}</td>
+                    <td>{act.actividad}</td>
+                    <td>{act.nvisitas}</td>
+                    <td>{act.ciclo}</td>
                     <td>
-                      <button className="btn btn-danger" onClick={() => this.props.deleteFromTable("datosBeneficiarios", i)}>
+                      <button className="btn btn-danger" onClick={() => this.deleteFromTable(i)}>
                         Borrar
                         </button>
                     </td>
@@ -159,7 +165,7 @@ export default class AddPerfil7 extends Component {
             </table>
 
             <div className="form-group">
-              <button className="btn btn-primary btn-block" onClick={() => this.props.pagina(8)}>
+              <button className="btn btn-primary btn-block" onClick={this.onSubmit}>
                 Siguiente
                 </button>
             </div>

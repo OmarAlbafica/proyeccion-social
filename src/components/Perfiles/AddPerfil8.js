@@ -1,57 +1,92 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
-
 
 export default class AddPerfil8 extends Component {
   state = {
-    nombre: "",
-    telefono: "",
-    correo: "",
-    institucion: "",
-    descripcion: "",
-    beneficiarios: []
+    descripcionM: "",
+    cantidadM: "",
+    precioUM: "",
+    precioIVAM: "",
+    descripcionT: "",
+    cantidadT: "",
+    precioUT: "",
+    precioIVAT: "",
+    materiales: [],
+    transporte: []
   }
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
 
-  enviar = () => {
-    const { nombre, telefono, correo, institucion, descripcion } = this.state;
-    this.props.pushToTable("datosBeneficiarios", {
-      nombre, telefono, correo, institucion, descripcion
-    })
-    this.setState({
-      nombre: "",
-      telefono: "",
-      correo: "",
-      institucion: "",
-      descripcion: ""
-    })
+  componentDidMount() {
+    const { materiales, transporte } = this.props.data;
+    this.setState({ materiales, transporte });
   }
+
+  onSubmit() {
+    const {materiales, transporte} = this.state;
+    this.props.onSubmit("window8", {materiales, transporte});
+  }
+
+  pushToTableM = () => {
+		const { descripcionM, cantidadM, precioUM, precioIVAM, materiales } = this.state;
+    if (descripcionM === "" || 
+      cantidadM === "" || 
+      precioUM === "" || 
+      precioIVAM === "") { return;}
+    materiales.push({
+      descripcion: descripcionM, 
+      cantidad: cantidadM, 
+      precioU: precioUM, 
+      precioIVA: precioIVAM
+    });
+		this.setState({ 
+      materiales, 
+      cantidadM: "", 
+      precioUM: "", 
+      precioIVAM: "",
+      descripcionM: ""
+    });
+  }
+  
+  deleteFromTableM = index => {
+		const { materiales } = this.state;
+		if (index !== -1) {
+			materiales.splice(index, 1);
+			this.setState({ materiales });
+		}
+  }
+  
+  pushToTableT = () => {
+		const { descripcionT, cantidadT, precioUT, precioIVAT, transporte } = this.state;
+    if (descripcionT === "" || 
+      cantidadT === "" || 
+      precioUT === "" || 
+      precioIVAT === "") { return;}
+      transporte.push({
+        descripcion: descripcionT, 
+        cantidad: cantidadT, 
+        precioU: precioUT, 
+        precioIVA: precioIVAT
+      });
+		this.setState({ 
+      transporte, 
+      cantidadT: "", 
+      precioUT: "", 
+      precioIVAT: "",
+      descripcionT: ""
+    });
+  }
+  
+  deleteFromTableT = index => {
+		const { transporte } = this.state;
+		if (index !== -1) {
+			transporte.splice(index, 1);
+			this.setState({ transporte });
+		}
+	}
 
   render() {
     const beneficiarios = this.props.data;
-    const { nombre, telefono, correo, institucion, descripcion } = this.state;
-
-    const ejemplo1 = [
-      {
-        descripcion: "Me aburri de poner Lorem Ipsums",
-        cantidad: "8",
-        preciou: "10.2",
-        totalConIVA: "10.2"
-      },
-      {
-        descripcion: "Me aburri de poner Lorem Ipsums",
-        cantidad: "8",
-        preciou: "10.2",
-        totalConIVA: "10.2"
-      },
-      {
-        descripcion: "Me aburri de poner Lorem Ipsums",
-        cantidad: "8",
-        preciou: "10.2",
-        totalConIVA: "10.2"
-      }
-    ]
+    const { materiales, transporte } = this.state;
 
     const ejemplo2 = [
       {
@@ -84,11 +119,11 @@ export default class AddPerfil8 extends Component {
               <input
                 type="text"
                 className="form-control"
-                name="nombre"
+                name="descripcionM"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={""}
+                value={this.state.descripcionM}
               />
             </div>
           </div>
@@ -98,11 +133,9 @@ export default class AddPerfil8 extends Component {
               <input
                 type="number"
                 className="form-control"
-                name="telefono"
-                minlenght="2"
-                required
+                name="cantidadM"
                 onChange={this.onChange}
-                value={""}
+                value={this.state.cantidadM}
               />
             </div>
           </div>
@@ -115,11 +148,11 @@ export default class AddPerfil8 extends Component {
               <input
                 type="text"
                 className="form-control"
-                name="nombre"
+                name="precioUM"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={""}
+                value={this.state.precioUM}
               />
             </div>
           </div>
@@ -127,13 +160,13 @@ export default class AddPerfil8 extends Component {
             <div className="form-group">
               <label htmlFor="lastName">Precio con IVA</label>
               <input
-                type="number"
+                type="text"
                 className="form-control"
-                name="telefono"
+                name="precioIVAM"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={""}
+                value={this.state.precioIVAM}
               />
             </div>
           </div>
@@ -141,7 +174,7 @@ export default class AddPerfil8 extends Component {
         <div className="form-group">
           <div className="col-md-4 float-right">
             <button
-              onClick={this.enviar}
+              onClick={this.pushToTableM}
               className="btn btn-secondary btn-block"
             >
               Ingresar
@@ -150,32 +183,33 @@ export default class AddPerfil8 extends Component {
         </div>
 
         <br /><br />
+        {materiales.length > 0 && 
         <table className=" table table-striped">
-          <thead className="thead-inverse">
-            <tr>
-              <th>Descripcion</th>
-              <th>Cantidad</th>
-              <th>Precio Unitario</th>
-              <th>Total con IVA</th>
-              <th />
+        <thead className="thead-inverse">
+          <tr>
+            <th>Descripcion</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Total con IVA</th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          {materiales.length > 0 && materiales.map((material, i) => (
+            <tr key={i}>
+              <td>{material.descripcion}</td>
+              <td>{material.cantidad}</td>
+              <td>{material.precioU}</td>
+              <td>{material.precioIVA}</td>
+              <td>
+                <button className="btn btn-danger" onClick={() => this.deleteFromTableM(i)}>
+                  Borrar
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {ejemplo1.map((beneficiario, i) => (
-              <tr key={i}>
-                <td>{beneficiario.descripcion}</td>
-                <td>{beneficiario.cantidad}</td>
-                <td>{beneficiario.preciou}</td>
-                <td>{beneficiario.totalConIVA}</td>
-                <td>
-                  <button className="btn btn-danger" onClick={() => this.props.deleteFromTable("datosBeneficiarios", i)}>
-                    Borrar
-                        </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          ))}
+        </tbody>
+      </table>}
 
         <br />
         <hr />
@@ -187,11 +221,11 @@ export default class AddPerfil8 extends Component {
               <input
                 type="text"
                 className="form-control"
-                name="nombre"
+                name="descripcionT"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={""}
+                value={this.state.descripcionT}
               />
             </div>
           </div>
@@ -201,11 +235,11 @@ export default class AddPerfil8 extends Component {
               <input
                 type="text"
                 className="form-control"
-                name="nombre"
+                name="cantidadT"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={""}
+                value={this.state.cantidadT}
               />
             </div>
           </div>
@@ -217,11 +251,11 @@ export default class AddPerfil8 extends Component {
               <input
                 type="text"
                 className="form-control"
-                name="nombre"
+                name="precioUT"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={""}
+                value={this.state.precioUT}
               />
             </div>
           </div>
@@ -231,11 +265,11 @@ export default class AddPerfil8 extends Component {
               <input
                 type="text"
                 className="form-control"
-                name="nombre"
+                name="precioIVAT"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={""}
+                value={this.state.precioIVAT}
               />
             </div>
           </div>
@@ -243,7 +277,7 @@ export default class AddPerfil8 extends Component {
         <div className="form-group">
           <div className="col-md-4 float-right">
             <button
-              onClick={this.enviar}
+              onClick={this.pushToTableT}
               className="btn btn-secondary btn-block"
             >
               Ingresar
@@ -251,32 +285,33 @@ export default class AddPerfil8 extends Component {
           </div>
         </div>
         <br /><br />
+        {transporte.length > 0 && 
         <table className=" table table-striped">
-          <thead className="thead-inverse">
-            <tr>
-              <th>Descripcion</th>
-              <th>Cantidad</th>
-              <th>Precio Unitario</th>
-              <th>total</th>
-              <th />
+        <thead className="thead-inverse">
+          <tr>
+            <th>Descripcion</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>total</th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          {transporte.map((transporte, i) => (
+            <tr key={i}>
+              <td>{transporte.descripcion}</td>
+              <td>{transporte.cantidad}</td>
+              <td>{transporte.precioU}</td>
+              <td>{transporte.precioIVA}</td>
+              <td>
+                <button className="btn btn-danger" onClick={() => this.deleteFromTableT(i)}>
+                  Borrar
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {ejemplo2.map((beneficiario, i) => (
-              <tr key={i}>
-                <td>{beneficiario.descripcion}</td>
-                <td>{beneficiario.cantidad}</td>
-                <td>{beneficiario.preciou}</td>
-                <td>{beneficiario.total}</td>
-                <td>
-                  <button className="btn btn-danger" onClick={() => this.props.deleteFromTable("datosBeneficiarios", i)}>
-                    Borrar
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          ))}
+        </tbody>
+      </table>}
 
       </div >
     )
@@ -299,7 +334,7 @@ export default class AddPerfil8 extends Component {
             {añadirBeneficiario}
 
             <div className="form-group">
-              <button className="btn btn-primary btn-block" onClick={() => this.props.pagina(9)}>
+              <button className="btn btn-primary btn-block" onClick={this.onSubmit}>
                 Siguiente
                 </button>
             </div>

@@ -4,33 +4,86 @@ import { Link } from 'react-router-dom'
 
 export default class AddPerfil9 extends Component {
   state = {
-    nombre: "",
-    telefono: "",
+    nombreOrganizacion: "",
+    descripcionOrganizacion: "",
     correo: "",
-    institucion: "",
-    descripcion: "",
-    beneficiarios: []
+    nombreActor: "",
+    telefonoActor: "",
+    correoActor: "",
+    descripcionActor: "",
+    organizacionesAliadas: [],
+    actoresClave: []
   }
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
 
-  enviar = () => {
-    const { nombre, telefono, correo, institucion, descripcion } = this.state;
-    this.props.pushToTable("datosBeneficiarios", {
-      nombre, telefono, correo, institucion, descripcion
-    })
-    this.setState({
-      nombre: "",
-      telefono: "",
-      correo: "",
-      institucion: "",
-      descripcion: ""
-    })
+  onSubmit = () => {
+    const {organizacionesAliadas, actoresClave} = this.state;
+    console.log(this.state);
+    this.props.onSubmit("window9", {organizacionesAliadas, actoresClave});
+    this.props.pagina(10);
   }
 
+  componentDidMount() {
+    const { organizacionesAliadas, actoresClave } = this.props.data;
+    this.setState({organizacionesAliadas, actoresClave})
+  }
+
+  pushToTableM = () => {
+		const { nombreOrganizacion, descripcionOrganizacion, organizacionesAliadas } = this.state;
+    if (nombreOrganizacion === "" || 
+    descripcionOrganizacion === "") { return;}
+      organizacionesAliadas.push({
+      descripcion: descripcionOrganizacion, 
+      nombre: nombreOrganizacion
+    });
+		this.setState({ 
+      organizacionesAliadas, 
+      nombreOrganizacion: "", 
+      descripcionOrganizacion: ""
+    });
+  }
+  
+  deleteFromTableM = index => {
+		const { organizacionesAliadas } = this.state;
+		if (index !== -1) {
+			organizacionesAliadas.splice(index, 1);
+			this.setState({ organizacionesAliadas });
+		}
+  }
+  
+  pushToTableT = () => {
+		const { nombreActor, telefonoActor, correoActor, descripcionActor, actoresClave } = this.state;
+    if (nombreActor === "" || 
+      telefonoActor === "" || 
+      correoActor === "" || 
+      descripcionActor === "") { return;}
+      actoresClave.push({
+        nombre: nombreActor, 
+        telefono: telefonoActor, 
+        correo: correoActor, 
+        correo: descripcionActor
+      });
+		this.setState({ 
+      actoresClave, 
+      nombreActor: "", 
+      telefonoActor: "", 
+      correoActor: "",
+      descripcionActor: ""
+    });
+  }
+  
+  deleteFromTableT = index => {
+		const { actoresClave } = this.state;
+		if (index !== -1) {
+			actoresClave.splice(index, 1);
+			this.setState({ actoresClave });
+		}
+	}
+
   render() {
-    const beneficiarios = this.props.data;
-    const { nombre, telefono, correo, institucion, descripcion } = this.state;
+    const beneficiarios = []
+    const { organizacionesAliadas, actoresClave } = this.state;
 
     const ejemplo1 = [
       {
@@ -82,11 +135,11 @@ export default class AddPerfil9 extends Component {
               <input
                 type="text"
                 className="form-control"
-                name="nombre"
+                name="nombreOrganizacion"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={""}
+                value={this.state.nombreOrganizacion}
               />
             </div>
           </div>
@@ -94,13 +147,13 @@ export default class AddPerfil9 extends Component {
             <div className="form-group">
               <label htmlFor="lastName">Descripcion</label>
               <input
-                type="number"
+                type="text"
                 className="form-control"
-                name="telefono"
+                name="descripcionOrganizacion"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={""}
+                value={this.state.descripcionOrganizacion}
               />
             </div>
           </div>
@@ -109,7 +162,7 @@ export default class AddPerfil9 extends Component {
         <div className="form-group">
           <div className="col-md-4 float-right">
             <button
-              onClick={this.enviar}
+              onClick={this.pushToTableM}
               className="btn btn-secondary btn-block"
             >
               Ingresar
@@ -118,28 +171,30 @@ export default class AddPerfil9 extends Component {
         </div>
 
         <br /><br />
+        {organizacionesAliadas.length > 0 &&
         <table className=" table table-striped">
-          <thead className="thead-inverse">
-            <tr>
-              <th>Nombre</th>
-              <th>Descripcion</th>
-              <th />
+        <thead className="thead-inverse">
+          <tr>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          {organizacionesAliadas.map((organizacion, i) => (
+            <tr key={i}>
+              <td>{organizacion.nombre}</td>
+              <td>{organizacion.descripcion}</td>
+              <td>
+                <button className="btn btn-danger" onClick={() => this.deleteFromTableM(i)}>
+                  Borrar
+                      </button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {ejemplo1.map((beneficiario, i) => (
-              <tr key={i}>
-                <td>{beneficiario.nombre}</td>
-                <td>{beneficiario.descripcion}</td>
-                <td>
-                  <button className="btn btn-danger" onClick={() => this.props.deleteFromTable("datosBeneficiarios", i)}>
-                    Borrar
-                        </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          ))}
+        </tbody>
+      </table>
+        }
 
         <br />
         <hr />
@@ -151,11 +206,11 @@ export default class AddPerfil9 extends Component {
               <input
                 type="text"
                 className="form-control"
-                name="nombre"
+                name="nombreActor"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={""}
+                value={this.state.nombreActor}
               />
             </div>
           </div>
@@ -165,11 +220,11 @@ export default class AddPerfil9 extends Component {
               <input
                 type="text"
                 className="form-control"
-                name="nombre"
+                name="telefonoActor"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={""}
+                value={this.state.telefonoActor}
               />
             </div>
           </div>
@@ -181,11 +236,11 @@ export default class AddPerfil9 extends Component {
               <input
                 type="text"
                 className="form-control"
-                name="nombre"
+                name="correoActor"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={""}
+                value={this.state.correoActor}
               />
             </div>
           </div>
@@ -195,11 +250,11 @@ export default class AddPerfil9 extends Component {
               <input
                 type="text"
                 className="form-control"
-                name="nombre"
+                name="descripcionActor"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={""}
+                value={this.state.descripcionActor}
               />
             </div>
           </div>
@@ -207,7 +262,7 @@ export default class AddPerfil9 extends Component {
         <div className="form-group">
           <div className="col-md-4 float-right">
             <button
-              onClick={this.enviar}
+              onClick={this.pushToTableT}
               className="btn btn-secondary btn-block"
             >
               Ingresar
@@ -215,7 +270,9 @@ export default class AddPerfil9 extends Component {
           </div>
         </div>
         <br /><br />
-        <table className=" table table-striped">
+        {
+          actoresClave.length > 0 &&
+          <table className=" table table-striped">
           <thead className="thead-inverse">
             <tr>
               <th>Nombre</th>
@@ -226,14 +283,14 @@ export default class AddPerfil9 extends Component {
             </tr>
           </thead>
           <tbody>
-            {ejemplo2.map((beneficiario, i) => (
+            {actoresClave.map((actor, i) => (
               <tr key={i}>
-                <td>{beneficiario.nombre}</td>
-                <td>{beneficiario.telefono}</td>
-                <td>{beneficiario.correo}</td>
-                <td>{beneficiario.descripcion}</td>
+                <td>{actor.nombre}</td>
+                <td>{actor.telefono}</td>
+                <td>{actor.correo}</td>
+                <td>{actor.descripcion}</td>
                 <td>
-                  <button className="btn btn-danger" onClick={() => this.props.deleteFromTable("datosBeneficiarios", i)}>
+                  <button className="btn btn-danger" onClick={() => this.deleteFromTableT(i)}>
                     Borrar
                   </button>
                 </td>
@@ -241,6 +298,7 @@ export default class AddPerfil9 extends Component {
             ))}
           </tbody>
         </table>
+        }
 
       </div >
     )
@@ -263,7 +321,7 @@ export default class AddPerfil9 extends Component {
             {añadirBeneficiario}
 
             <div className="form-group">
-              <button className="btn btn-primary btn-block" onClick={() => this.props.pagina(10)}>
+              <button className="btn btn-primary btn-block" onClick={this.onSubmit}>
                 Siguiente
                 </button>
             </div>

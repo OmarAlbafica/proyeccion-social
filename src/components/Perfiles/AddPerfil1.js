@@ -27,10 +27,6 @@ export default class AddPerfil1 extends Component {
     } else this.setState({[e.target.name]: e.target.value})
   };
 
-  componentDidMount() {
-    this.setState({...this.state, ...this.props.data});
-  }
-
   onSubmit = () => {
     const { id, facultad, titulo, escuela, lineaProyeccion, descripcionBeneficiarios,cantidadBeneficiarios, duracionCiclos } = this.state;
     
@@ -45,7 +41,7 @@ export default class AddPerfil1 extends Component {
 
   render() {
 
-    const { facultad, escuela } = this.state;
+    const { facultad } = this.state;
     const { facultades } = this.props;
     return (
       <div>

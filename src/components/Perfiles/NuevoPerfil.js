@@ -18,8 +18,9 @@ import VerPerfil from "./VerPerfil";
 
 class NuevoPerfil extends Component {
   state = {
-    pagina: 6,
+    pagina: 9,
     facultades: [],
+    ciclos: [],
     window1: {
       id: "",
       facultad: "",
@@ -45,6 +46,17 @@ class NuevoPerfil extends Component {
     window6: {
       objetivos: []
     },
+    window7: {
+      actividades: []
+    },
+    window8: {
+      materiales: [],
+      transporte: []
+    },
+    window9: {
+      actoresClave: [],
+      organizacionesAliadas: []
+    },
     datosBeneficiarios: []
   };
 
@@ -52,8 +64,14 @@ class NuevoPerfil extends Component {
     const { firestore } = this.props;
 
     firestore.collection("facultades").get()
-    .then(querySnapshot => 
-      this.setState({ facultades: querySnapshot.docs.map(doc => doc.data())}));
+    .then(querySnapshot => {
+      const facultades = querySnapshot.docs.map(doc => doc.data());
+      firestore.collection("ciclos").get()
+        .then(query => {
+          const ciclos = query.docs.map(doc => doc.data()).map(cic => cic.ciclo);
+          this.setState({facultades, ciclos})
+        })
+    });
   }
 
   onChange = e =>
@@ -74,39 +92,9 @@ class NuevoPerfil extends Component {
     this.setState({ pagina: setPagina })
   };
 
-  deleteFromTable = (nombre, index) => {
-    const array = [...this.state.datosBeneficiarios];
-
-    if (index !== -1) {
-      array.splice(index, 1);
-      this.setState({ datosBeneficiarios: array });
-    }
-  }
-
-  pushToTable = (nombre, datos) => {
-    const data = this.state[nombre];
-    data.push(datos);
-    this.setState({ [nombre]: data });
-  }
-
-  onSubmit = async e => {
-    e.preventDefault();
-
-    // const newClient = this.state;
-    // const { firestore, history } = this.props;
-
-    // // If no balance, make 0
-    // if (newClient.balance === "") {
-    //   newClient.balance = 0;
-    // }
-
-    // firestore
-    //   .add({ collection: "roles" }, { correo: "test@mail.com", rol: "admin" })
-    //   .then(() => history.push("/"));
-  };
-
   render() {
-    const { pagina, window1, window2, window3, window4, window5, window6, datosBeneficiarios } = this.state;
+    const { pagina, window1, window2, window3, window4, window5, window6, 
+      window7, window8, window9, datosBeneficiarios, ciclos } = this.state;
     if (pagina === 1) {
       return <AddPerfil1
         data={window1}
@@ -137,8 +125,6 @@ class NuevoPerfil extends Component {
           data={window4}
           onSubmit={this.changeState}
           pagina={this.pagina}
-          deleteFromTable={this.deleteFromTable}
-          pushToTable={this.pushToTable}
         />
       } else if (pagina === 5) {
         return <AddPerfil5
@@ -154,34 +140,27 @@ class NuevoPerfil extends Component {
         />
       } else if (pagina === 7) {
         return <AddPerfil7
-          data={datosBeneficiarios}
+          data={window7}
+          ciclos={ciclos}
           onSubmit={this.changeState}
           pagina={this.pagina}
-          deleteFromTable={this.deleteFromTable}
-          pushToTable={this.pushToTable}
         />
       } else if (pagina === 8) {
         return <AddPerfil8
-          data={datosBeneficiarios}
+          data={window8}
           onSubmit={this.changeState}
           pagina={this.pagina}
-          deleteFromTable={this.deleteFromTable}
-          pushToTable={this.pushToTable}
         />
       } else if (pagina === 9) {
         return <AddPerfil9
-          data={datosBeneficiarios}
+          data={window9}
           onSubmit={this.changeState}
           pagina={this.pagina}
-          deleteFromTable={this.deleteFromTable}
-          pushToTable={this.pushToTable}
         />
       } else return <VerPerfil
         data={datosBeneficiarios}
         onSubmit={this.changeState}
         pagina={this.pagina}
-        deleteFromTable={this.deleteFromTable}
-        pushToTable={this.pushToTable}
       />
   }
 }

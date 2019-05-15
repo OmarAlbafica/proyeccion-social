@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
 
 
 export default class AddPerfil6 extends Component {
@@ -30,7 +29,7 @@ export default class AddPerfil6 extends Component {
 	}
 
   pushToTable = () => {
-		const {descripcion, checked, tipo, objetivos} = this.state;
+		const {descripcion, tipo, objetivos} = this.state;
 		if (descripcion === "") { return;}
 		objetivos.push({descripcion, tipo});
 		this.setState({ objetivos, descripcion: "", checked: false, tipo: "Especifico"});
