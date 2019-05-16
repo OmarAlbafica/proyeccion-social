@@ -4,7 +4,9 @@ import React, { Component } from 'react';
 export default class AddPerfil2 extends Component {
 	state = {
 		asignatura: "",
-		asignaturas: []
+		asignaturas: [],
+		alumnosM: "0",
+		alumnosF: "0"
 	}
 
 	pushToTable = () => {
@@ -17,8 +19,8 @@ export default class AddPerfil2 extends Component {
 
 
 	componentDidMount() {
-		const {asignaturas} = this.props.data;
-		this.setState({asignaturas});
+		const {asignaturas, alumnosM, alumnosF} = this.props.data;
+		this.setState({asignaturas, alumnosM, alumnosF});
 	}
 
 	deleteFromTable = index => {
@@ -31,8 +33,13 @@ export default class AddPerfil2 extends Component {
 	}
 
 	onSubmit = () => {
-		if (this.state.asignaturas.length > 0) {
-			this.props.onSubmit("window2", {asignaturas: this.state.asignaturas})
+		const {asignaturas, alumnosM, alumnosF} = this.state;
+		if (asignaturas.length > 0 && alumnosM != "0" && alumnosF != "0") {
+			this.props.onSubmit("window2", {
+				asignaturas: this.state.asignaturas,
+				alumnosM,
+				alumnosF
+			})
 			this.props.pagina(3)
 		}
 	}
@@ -45,7 +52,8 @@ export default class AddPerfil2 extends Component {
 	render() {
 		const { facultades } = this.props;
 		const {facultad, escuela} = this.props;
-
+		console.log("state",this.state);
+		console.log("props",this.props);
 		return (
 			<div>
 				<div className="row">
@@ -85,6 +93,7 @@ export default class AddPerfil2 extends Component {
 							</div>
 						</div>
 					</div>
+					</div>
 						<div className="form-group">
 							<label>Asignatura:</label>
 							<select className="browser-default custom-select" name="asignatura" onChange={this.onChange}>
@@ -104,27 +113,55 @@ export default class AddPerfil2 extends Component {
 							</div>
 						</div>
 						</div>
-						<br /><br /><br /><br />
+						{this.state.asignaturas.length > 0 && 
 						<table className=" table table-striped">
-							<thead className="thead-inverse">
-								<tr>
-									<th>Asignatura</th>
-									<th />
+						<thead className="thead-inverse">
+							<tr>
+								<th>Asignatura</th>
+								<th />
+							</tr>
+						</thead>
+						<tbody>
+							{this.state.asignaturas.length > 0 && this.state.asignaturas.map((asignatura, i) => (
+								<tr key={i}>
+									<td>{asignatura}</td>
+									<td>
+										<button className="btn btn-danger" onClick={() => this.deleteFromTable(i)}>
+											Borrar
+											</button>
+									</td>
 								</tr>
-							</thead>
-							<tbody>
-								{this.state.asignaturas.length > 0 && this.state.asignaturas.map((asignatura, i) => (
-									<tr key={i}>
-										<td>{asignatura}</td>
-										<td>
-											<button className="btn btn-danger" onClick={() => this.deleteFromTable(i)}>
-												Borrar
-												</button>
-										</td>
-									</tr>
-								))}
-							</tbody>
-						</table>
+							))}
+						</tbody>
+					</table>}
+						<br/><br/>
+						<hr/>
+						<div className="container">
+						<div className="form-group">
+						<label>Cantidad de alumnos masculinos: </label>
+					<input
+						type="number"
+						className="form-control"
+						name="alumnosM"
+						minlenght="2"
+						required
+						onChange={this.onChange}
+						value={this.state.alumnosM}
+					/>
+					</div>
+
+					<div className="form-group">
+					<label>Cantidad de alumnos femeninos: </label>
+					<input
+						type="number"
+						className="form-control"
+						name="alumnosF"
+						minlenght="2"
+						required
+						onChange={this.onChange}
+						value={this.state.alumnosF}
+					/>
+						</div>
 
 						<div className="form-group">
 							<button className="btn btn-primary btn-block" onClick={this.onSubmit}>

@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
-
 
 export default class AddPerfil9 extends Component {
   state = {
@@ -62,7 +60,7 @@ export default class AddPerfil9 extends Component {
         nombre: nombreActor, 
         telefono: telefonoActor, 
         correo: correoActor, 
-        correo: descripcionActor
+        descripcionActor: descripcionActor
       });
 		this.setState({ 
       actoresClave, 
@@ -84,46 +82,6 @@ export default class AddPerfil9 extends Component {
   render() {
     const beneficiarios = []
     const { organizacionesAliadas, actoresClave } = this.state;
-
-    const ejemplo1 = [
-      {
-        nombre: "Me aburri de poner Lorem Ipsums",
-        descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate aperiam quisquam corrupti vitae tempore. Exercitationem quibusdam quis nemo iure, possimus necessitatibus modi unde quidem sapiente rem quaerat, amet ab maxime"
-      },
-      {
-        nombre: "Me aburri de poner Lorem Ipsums",
-        descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate aperiam quisquam corrupti vitae tempore. Exercitationem quibusdam quis nemo iure, possimus necessitatibus modi unde quidem sapiente rem quaerat, amet ab maxime"
-      },
-      {
-        nombre: "Me aburri de poner Lorem Ipsums",
-        descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate aperiam quisquam corrupti vitae tempore. Exercitationem quibusdam quis nemo iure, possimus necessitatibus modi unde quidem sapiente rem quaerat, amet ab maxime"
-      },
-      {
-        nombre: "Me aburri de poner Lorem Ipsums",
-        descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate aperiam quisquam corrupti vitae tempore. Exercitationem quibusdam quis nemo iure, possimus necessitatibus modi unde quidem sapiente rem quaerat, amet ab maxime"
-      },
-    ]
-
-    const ejemplo2 = [
-      {
-        nombre: "Juan",
-        telefono: "2948429",
-        correo: "mail@mail.com",
-        descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate aperiam quisquam corrupti vitae tempore. Exercitationem quibusdam quis nemo iure, possimus necessitatibus modi unde quidem sapiente rem quaerat, amet ab maxime"
-      },
-      {
-        nombre: "Juan",
-        telefono: "2948429",
-        correo: "mail@mail.com",
-        descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate aperiam quisquam corrupti vitae tempore. Exercitationem quibusdam quis nemo iure, possimus necessitatibus modi unde quidem sapiente rem quaerat, amet ab maxime"
-      },
-      {
-        nombre: "Juan",
-        telefono: "2948429",
-        correo: "mail@mail.com",
-        descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate aperiam quisquam corrupti vitae tempore. Exercitationem quibusdam quis nemo iure, possimus necessitatibus modi unde quidem sapiente rem quaerat, amet ab maxime"
-      }
-    ]
 
     const añadirBeneficiario = (
       <div className="card-body">

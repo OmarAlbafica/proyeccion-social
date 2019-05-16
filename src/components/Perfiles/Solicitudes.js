@@ -6,7 +6,6 @@ import { firestoreConnect } from "react-redux-firebase";
 import PropTypes from "prop-types";
 import Spinner from "../layouts/Spinner";
 import classnames from "classnames";
-import Modal from "react-bootstrap-modal"
 
 class Clients extends Component {
   state = {
@@ -30,12 +29,6 @@ class Clients extends Component {
   }
 
   render() {
-
-    let closeModal = () => this.setState({ open: false })
-
-    let saveAndClose = () => {
-      this.setState({ open: false })
-    }
 
     const ejemplo = [
       {

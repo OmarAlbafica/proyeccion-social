@@ -51,7 +51,7 @@ export default class AddPerfil6 extends Component {
       <div className="card-body">
         <div className="form-group">
           <label>Objetivo:</label>
-          <textarea name="descripcion" onChange={this.onChange} value={this.state.descripcion} cols="30" rows="5" className="form-control"></textarea>
+          <textarea name="descripcion" onChange={this.onChange} value={descripcion} cols="30" rows="5" className="form-control"></textarea>
         </div>
 
         {objetivos.length >= 0 && objetivos.filter(obj => obj.tipo === "General")

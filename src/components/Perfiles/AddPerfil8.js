@@ -21,9 +21,10 @@ export default class AddPerfil8 extends Component {
     this.setState({ materiales, transporte });
   }
 
-  onSubmit() {
+  onSubmit = () => {
     const {materiales, transporte} = this.state;
     this.props.onSubmit("window8", {materiales, transporte});
+    this.props.pagina(9);
   }
 
   pushToTableM = () => {
@@ -87,27 +88,6 @@ export default class AddPerfil8 extends Component {
   render() {
     const beneficiarios = this.props.data;
     const { materiales, transporte } = this.state;
-
-    const ejemplo2 = [
-      {
-        descripcion: "Carrito",
-        cantidad: "20",
-        preciou: "5",
-        total: "100"
-      },
-      {
-        descripcion: "Carrito",
-        cantidad: "20",
-        preciou: "5",
-        total: "100"
-      },
-      {
-        descripcion: "Carrito",
-        cantidad: "20",
-        preciou: "5",
-        total: "100"
-      }
-    ]
 
     const añadirBeneficiario = (
       <div className="card-body">

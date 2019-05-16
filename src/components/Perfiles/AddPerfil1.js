@@ -42,7 +42,8 @@ export default class AddPerfil1 extends Component {
   render() {
 
     const { facultad } = this.state;
-    const { facultades } = this.props;
+    const { facultades, lineasProyeccion } = this.props;
+    console.log(lineasProyeccion)
     return (
       <div>
         <div className="row">
@@ -90,7 +91,7 @@ export default class AddPerfil1 extends Component {
               <label>Escuela:</label>
               <select className="browser-default custom-select" name="escuela" onChange={this.onChange}>
                 <option value="">Seleccionar Escuela</option>
-                {facultad !== "" && facultades && facultades
+                {facultad !== "" && facultades.length > 0 && facultades
                   .filter(facu => facu.nombre === facultad)[0]
                   . escuelas.map((escuela, i) => 
                     <option key={i} value={escuela.nombre}>{escuela.nombre}</option>)
@@ -103,9 +104,10 @@ export default class AddPerfil1 extends Component {
               <label>Linea de proyección social que desarrollará</label>
               <select name="lineaProyeccion" className="browser-default custom-select" onChange={this.onChange}>
                 <option>Elija la linea de proyección</option>
-                <option value="1">Option 1</option>
-                <option value="2">Option 2</option>
-                <option value="3">Option 3</option>
+                {lineasProyeccion.length > 0 && lineasProyeccion
+                  .map((linea, i) => 
+                    <option key={i} value={linea}>{linea}</option>)
+                }
               </select>
             </div>
 

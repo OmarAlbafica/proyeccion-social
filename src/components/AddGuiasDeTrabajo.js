@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
@@ -63,7 +63,7 @@ class NuevoPerfil extends Component {
   };
 
   render() {
-    const { pagina, datosPerfil, datosBeneficiarios } = this.state;
+    const { pagina, datosPerfil } = this.state;
     if (pagina === 1) {
       return <GuiaTrabajo1
         data={datosPerfil}

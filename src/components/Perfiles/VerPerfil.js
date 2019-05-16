@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
 
 
 export default class Resumen extends Component {
   render() {
 
+    const {window1,window2,window3,window4,window5,window6,window7,window8,window9} = this.props.data;
+    console.log(this.props.data);
     const docentes = [
       {
         nombre: "Juan Perez",
@@ -144,29 +145,29 @@ export default class Resumen extends Component {
             </div>
             <div className="col-md-6">
               <div className="card-body">
-                <label>Informática Y Ciencias Aplicadas</label>
+                <label>{window1.facultad}</label>
               </div>
             </div>
 
             <div className="col-md-6">
               <div className="card-body">
-                <label>2.Escuela:</label>
+                <label>2. Escuela:</label>
               </div>
             </div>
             <div className="col-md-6">
               <div className="card-body">
-                <label>Ciencias Aplicadas</label>
+                <label>{window1.escuela}</label>
               </div>
             </div>
 
             <div className="col-md-6">
               <div className="card-body">
-                <label>3. Linea de Proyección:</label>
+                <label>3. Linea de Proyeccion</label>
               </div>
             </div>
             <div className="col-md-6">
               <div className="card-body">
-                <label>Desarrollo de TIC</label>
+                <label>{window1.lineaProyeccion}</label>
               </div>
             </div>
 
@@ -177,7 +178,7 @@ export default class Resumen extends Component {
             </div>
             <div className="col-md-6">
               <div className="card-body">
-                <label>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex laboriosam laudantium impedit temporibus ratione perferendis, atque unde odit quibusdam molestiae saepe quaerat? Assumenda blanditiis, laudantium tempore doloribus facilis numquam voluptas!</label>
+                <label>{window1.titulo}</label>
               </div>
             </div>
 
@@ -189,7 +190,7 @@ export default class Resumen extends Component {
             </div>
             <div className="col-md-12">
               <div className="card-body">
-                <label>Descripción de la actividad...</label>
+                <label>{window1.descripcionBeneficiarios}</label>
               </div>
             </div>
 
@@ -200,7 +201,7 @@ export default class Resumen extends Component {
             </div>
             <div className="col-md-6">
               <div className="card-body">
-                <label>45</label>
+                <label>{window1.cantidadBeneficiarios}</label>
               </div>
             </div>
 
@@ -211,7 +212,7 @@ export default class Resumen extends Component {
             </div>
             <div className="col-md-6">
               <div className="card-body">
-                <label>2</label>
+                <label>{window1.duracionCiclos}</label>
               </div>
             </div>
 
@@ -229,15 +230,12 @@ export default class Resumen extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>Arquitectura</td>
-                    </tr>
-                    <tr>
-                      <td>Comunicaciones</td>
-                    </tr>
-                    <tr>
-                      <td>Turismo</td>
-                    </tr>
+                    {window2.asignaturas.length > 0 && 
+                    window2.asignaturas.map((asignatura, i) => 
+                      <tr key={i}>
+                        <td>{asignatura}</td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -251,18 +249,20 @@ export default class Resumen extends Component {
             <div className="col-md-6">
               <div className="card-body" style={{ marginLeft: "20px" }}>
                 <table className="table">
-                  <tr>
-                    <th />
-                    <th />
-                  </tr>
-                  <tr>
-                    <td>M</td>
-                    <td>20</td>
-                  </tr>
-                  <tr>
-                    <td>F</td>
-                    <td>15</td>
-                  </tr>
+                  <tbody>
+                    <tr>
+                      <th />
+                      <th />
+                    </tr>
+                    <tr>
+                      <td>M</td>
+                      <td>{window2.alumnosM}</td>
+                    </tr>
+                    <tr>
+                      <td>F</td>
+                      <td>{window2.alumnosF}</td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
             </div>
@@ -285,11 +285,11 @@ export default class Resumen extends Component {
                 </tr>
               </thead>
               <tbody>
-                {docentes.map((beneficiario, i) => (
+                {window3.docentes.length > 0 && window3.docentes.map((docente, i) => (
                   <tr key={i}>
-                    <td>{beneficiario.nombre}</td>
-                    <td>{beneficiario.escuela}</td>
-                    <td>{beneficiario.tipo}</td>
+                    <td>{docente.nombre}</td>
+                    <td>{docente.escuela}</td>
+                    <td>{docente.tipo}</td>
                   </tr>
                 ))}
               </tbody>
@@ -313,12 +313,12 @@ export default class Resumen extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {beneficiarios.map((beneficiario, i) => (
+                  {window4.representantes.length > 0 && window4.representantes.map((representante, i) => (
                     <tr key={i}>
-                      <td>{beneficiario.nombre}</td>
-                      <td>{beneficiario.telefono}</td>
-                      <td>{beneficiario.correo}</td>
-                      <td>{beneficiario.institucion}</td>
+                      <td>{representante.correoRepresentante}</td>
+                      <td>{representante.telefonoRepresentante}</td>
+                      <td>{representante.correoRepresentante}</td>
+                      <td>{representante.institucion}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -336,7 +336,33 @@ export default class Resumen extends Component {
           </div>
           <br />
           <div className="card-body">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus sapiente ducimus voluptas, quis illo voluptates libero quibusdam animi delectus? Dolore voluptatum sed optio suscipit beatae accusantium exercitationem itaque illum eligendi.
+            {window5.justificacion}
+          </div>
+        </div>
+
+        <div className="card">
+          <br />
+          <h2 className="h2" style={{ marginLeft: "20px" }}>Descripción de Objetivos</h2>
+          <div className="card-body">
+            13. Objetivos
+          </div>
+          <div className="card-body" style={{ marginLeft: "20px" }}>
+            <table className=" table table-striped">
+              <thead className="thead-inverse">
+                <tr>
+                  <th>Descripción</th>
+                  <th>Tipo</th>
+                </tr>
+              </thead>
+              <tbody>
+                {window6.objetivos.length > 0 && window6.objetivos.map((objetivo, i) => (
+                  <tr key={i}>
+                    <td>{objetivo.descripcion}</td>
+                    <td>{objetivo.tipo}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 
@@ -353,14 +379,16 @@ export default class Resumen extends Component {
                   <th>Actividad</th>
                   <th>N de Visitas</th>
                   <th>Ciclo</th>
+                  <th>Objetivo</th>
                 </tr>
               </thead>
               <tbody>
-                {actividades.map((beneficiario, i) => (
+                {window7.actividades.length > 0 && window7.actividades.map((actividad, i) => (
                   <tr key={i}>
-                    <td>{beneficiario.actividad}</td>
-                    <td>{beneficiario.nvisitas}</td>
-                    <td>{beneficiario.ciclo}</td>
+                    <td>{actividad.actividad}</td>
+                    <td>{actividad.nVisitas}</td>
+                    <td>{actividad.ciclo}</td>
+                    <td>{actividad.objetivo}</td>
                   </tr>
                 ))}
               </tbody>
@@ -385,12 +413,12 @@ export default class Resumen extends Component {
                 </tr>
               </thead>
               <tbody>
-                {materiales.map((beneficiario, i) => (
+                {window8.materiales.length > 0 && window8.materiales.map((material, i) => (
                   <tr key={i}>
-                    <td>{beneficiario.descripcion}</td>
-                    <td>{beneficiario.cantidad}</td>
-                    <td>{beneficiario.preciou}</td>
-                    <td>{beneficiario.totalConIVA}</td>
+                    <td>{material.descripcion}</td>
+                    <td>{material.cantidad}</td>
+                    <td>{material.precioU}</td>
+                    <td>{material.precioIVA}</td>
                   </tr>
                 ))}
               </tbody>
@@ -414,15 +442,43 @@ export default class Resumen extends Component {
                 </tr>
               </thead>
               <tbody>
-                {organizaciones.map((beneficiario, i) => (
+                {window9.organizacionesAliadas.length > 0 && window9.organizacionesAliadas.map((org, i) => (
                   <tr key={i}>
-                    <td>{beneficiario.nombre}</td>
-                    <td>{beneficiario.descripcion}</td>
+                    <td>{org.nombre}</td>
+                    <td>{org.descripcion}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+          <br/><br/>
+
+          <div className="card-body">
+          16.2) Transporte
+          </div>
+          <div className="card-body" style={{ marginLeft: "20px" }}>
+            <table className=" table table-striped">
+              <thead className="thead-inverse">
+                <tr>
+                  <th>Cantidad</th>
+                  <th>Descripcion</th>
+                  <th>Precio Unidad</th>
+                  <th>Precio Con IVA</th>
+                </tr>
+              </thead>
+              <tbody>
+                {window8.transporte.length > 0 && window8.transporte.map((transporte, i) => (
+                  <tr key={i}>
+                    <td>{transporte.cantidad}</td>
+                    <td>{transporte.descripcion}</td>
+                    <td>{transporte.precioU}</td>
+                    <td>{transporte.precioIVA}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
           <div className="card-body">
             17. Actores clave
           </div>
@@ -433,16 +489,14 @@ export default class Resumen extends Component {
                   <th>Nombre</th>
                   <th>Telefono</th>
                   <th>Correo</th>
-                  <th>Descripcion</th>
                 </tr>
               </thead>
               <tbody>
-                {actores.map((beneficiario, i) => (
+                {window9.actoresClave.length > 0 && window9.actoresClave.map((actor, i) => (
                   <tr key={i}>
-                    <td>{beneficiario.nombre}</td>
-                    <td>{beneficiario.telefono}</td>
-                    <td>{beneficiario.correo}</td>
-                    <td>{beneficiario.descripcion}</td>
+                    <td>{actor.nombre}</td>
+                    <td>{actor.telefono}</td>
+                    <td>{actor.correo}</td>
                   </tr>
                 ))}
               </tbody>
@@ -451,9 +505,9 @@ export default class Resumen extends Component {
         </div>
 
         <div className="form-group">
-          <Link to="/" className="btn btn-primary btn-block">
+          <button className="btn btn-primary btn-block" onClick={this.props.onSubmit}>
             Enviar Perfil
-          </Link>
+          </button>
         </div>
       </div >
 

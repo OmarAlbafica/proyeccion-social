@@ -6,12 +6,10 @@ import { firestoreConnect } from "react-redux-firebase";
 import PropTypes from "prop-types";
 import Spinner from "../layouts/Spinner";
 import classnames from "classnames";
-import Modal from "react-bootstrap-modal"
 
 class Clients extends Component {
   state = {
-    totalOwed: null,
-    open: true
+    perfiles: []
   };
 
   toggle = () => this.setState({ open: !this.state.open });
@@ -30,13 +28,6 @@ class Clients extends Component {
   }
 
   render() {
-
-    let closeModal = () => this.setState({ open: false })
-
-    let saveAndClose = () => {
-      this.setState({ open: false })
-    }
-
     const ejemplo = [
       {
         estado: "Pendiente",
@@ -68,8 +59,8 @@ class Clients extends Component {
         linea: "Arte y Arquitectura destilando amor"
       }
     ]
-    const { clients } = this.props;
-    if (clients) {
+    const { perfiles } = this.props;
+    if (perfiles) {
       return (
         <div className="row">
           <div className="col-md-6">
@@ -95,20 +86,20 @@ class Clients extends Component {
             <tbody>
               {/* onClick={() => valor.estado !== "Cambios solicitados" ? null :
                 this.toggle()} */}
-              {ejemplo.map(valor => (
-                <tr key={valor.estado}>
-                  {valor.estado !== "Cambios solicitados" ?
+              {perfiles.length > 0 && perfiles.map((perfil, i) => (
+                <tr key={i}>
+                  {perfil.estado !== "Cambios solicitados" ?
                     <td data-toggle="modal" data-target="#exampleModal"
                       className={classnames("alert", {
-                        "alert-success": valor.estado === "Aceptado",
-                        "alert alert-dark": valor.estado === "Pendiente",
-                        "alert-danger": valor.estado === "Rechazado"
+                        "alert-success": perfil.estado === "Aceptado",
+                        "alert alert-dark": perfil.estado === "Pendiente",
+                        "alert-danger": perfil.estado === "Rechazado"
                       })}>
-                      {valor.estado}
+                      {perfil.estado}
                     </td>
                     : <td data-toggle="modal" data-target="#exampleModal"
                       className="alert alert-warning" style={{ cursor: "pointer" }}>
-                      {valor.estado} <br />
+                      {perfil.estado} <br />
                       (Click para ver)
                       <div className="modal fade text-primary" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div className="modal-dialog" role="document">
@@ -130,11 +121,11 @@ class Clients extends Component {
                       </div>
                     </td>}
                   <td>
-                    {valor.facultad}
+                    {perfil.facultad}
                   </td>
-                  <td>{valor.escuela}</td>
-                  <td>{valor.titulo}</td>
-                  <td>{valor.linea}</td>
+                  <td>{perfil.escuela}</td>
+                  <td>{perfil.titulo}</td>
+                  <td>{perfil.lineaProyeccion}</td>
                   <td>
                     <Link
                       to={`/client/6`}
@@ -146,7 +137,7 @@ class Clients extends Component {
                     </Link>
                   </td>
                   <td>
-                    {valor.estado === "Aceptado" ?
+                    {perfil.estado === "Aceptado" ?
                       <a
                         href={`/perfiles/3453453236/solicitudes`}
                         className="btn btn-info btn-sm"
@@ -193,8 +184,8 @@ Clients.propTypes = {
 };
 
 export default compose(
-  firestoreConnect([{ collection: "clients" }]),
+  firestoreConnect([{ collection: "perfiles" }]),
   connect(({ firestore: { ordered } }, props) => ({
-    clients: ordered.clients
+    perfiles: ordered.perfiles
   }))
 )(Clients);

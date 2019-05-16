@@ -10,7 +10,7 @@ export default class AddPerfil3 extends Component {
   }
 
   componentDidMount() {
-    const docentes = this.props.data;
+    const { docentes } = this.props.data;
     this.setState({docentes});
   }
 
@@ -30,7 +30,7 @@ export default class AddPerfil3 extends Component {
   };
 
   pushToTable = () => {
-		const {nombre, docentes, escuela, check, tipo} = this.state;
+    const {nombre, docentes, escuela, tipo} = this.state;
 		if (nombre === "" || escuela === "") { return;}
 		if (escuela === "Elija su escuela") {this.setState({docente: ""})};
 		docentes.push({nombre, tipo, escuela});

@@ -29,8 +29,8 @@ export default class AddPerfil3 extends Component {
   }
 
   render() {
-    const beneficiarios = this.props.data;
-    const { nombre, telefono, correo, institucion, descripcion } = this.state;
+    // const beneficiarios = this.props.data;
+    // const { nombre, telefono, correo, institucion, descripcion } = this.state;
 
     const ejemplo = [
       {
