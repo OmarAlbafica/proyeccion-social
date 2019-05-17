@@ -44,7 +44,6 @@ export default class AddPerfil6 extends Component {
 	}
 
   render() {
-    console.log(this.state);
     const { checked, descripcion, objetivos } = this.state;
 
     const añadirBeneficiario = (

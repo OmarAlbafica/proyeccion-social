@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 export default class AddPerfil1 extends Component {
   state = {
-    id: "",
+    idPerfil: "",
     facultad: "",
     escuela: "",
     lineaProyeccion: "",
@@ -15,8 +15,8 @@ export default class AddPerfil1 extends Component {
   }
 
   componentDidMount() {
-    const { id, facultad, titulo, escuela, lineaProyeccion, descripcionBeneficiarios,cantidadBeneficiarios, duracionCiclos } = this.props.data;
-    this.setState({ id, facultad, titulo, escuela, lineaProyeccion, descripcionBeneficiarios,cantidadBeneficiarios, duracionCiclos });
+    const { idPerfil, facultad, titulo, escuela, lineaProyeccion, descripcionBeneficiarios,cantidadBeneficiarios, duracionCiclos } = this.props.data;
+    this.setState({ idPerfil, facultad, titulo, escuela, lineaProyeccion, descripcionBeneficiarios,cantidadBeneficiarios, duracionCiclos });
   }
 
   onChange = e => {
@@ -28,13 +28,13 @@ export default class AddPerfil1 extends Component {
   };
 
   onSubmit = () => {
-    const { id, facultad, titulo, escuela, lineaProyeccion, descripcionBeneficiarios,cantidadBeneficiarios, duracionCiclos } = this.state;
+    const { idPerfil, facultad, titulo, escuela, lineaProyeccion, descripcionBeneficiarios,cantidadBeneficiarios, duracionCiclos } = this.state;
     
-    if (id === "" || facultad === "" || titulo === "" || escuela === "" || lineaProyeccion === "" || descripcionBeneficiarios === "" || cantidadBeneficiarios === "" || duracionCiclos === "") {
-      this.props.onError("Por favor llene todos los campos");
+    if (idPerfil === "" || facultad === "" || titulo === "" || escuela === "" || lineaProyeccion === "" || descripcionBeneficiarios === "" || cantidadBeneficiarios === "" || duracionCiclos === "") {
+      return;
     } 
     else {
-      this.props.onSubmit("window1", {...this.state});
+      this.props.onSubmit("window1", {idPerfil: idPerfil, facultad, titulo, escuela, lineaProyeccion, descripcionBeneficiarios,cantidadBeneficiarios, duracionCiclos});
       this.props.pagina(2);
     }
   }
@@ -43,7 +43,7 @@ export default class AddPerfil1 extends Component {
 
     const { facultad } = this.state;
     const { facultades, lineasProyeccion } = this.props;
-    console.log(lineasProyeccion)
+
     return (
       <div>
         <div className="row">
@@ -65,11 +65,11 @@ export default class AddPerfil1 extends Component {
               <input
                 type="text"
                 className="form-control"
-                name="id"
+                name="idPerfil"
                 minlenght="2"
                 required
                 onChange={this.onChange}
-                value={this.state.id}
+                value={this.state.idPerfil}
               />
             </div>
 
@@ -91,6 +91,7 @@ export default class AddPerfil1 extends Component {
               <label>Escuela:</label>
               <select className="browser-default custom-select" name="escuela" onChange={this.onChange}>
                 <option value="">Seleccionar Escuela</option>
+                
                 {facultad !== "" && facultades.length > 0 && facultades
                   .filter(facu => facu.nombre === facultad)[0]
                   . escuelas.map((escuela, i) => 

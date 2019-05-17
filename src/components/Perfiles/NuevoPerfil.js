@@ -23,7 +23,7 @@ class NuevoPerfil extends Component {
     lineasProyeccion: [],
     ciclos: [],
     window1: {
-      id: "",
+      idPerfil: "",
       facultad: "",
       escuela: "",
       lineaProyeccion: "",
@@ -233,6 +233,7 @@ class NuevoPerfil extends Component {
   render() {
     const { pagina, window1, window2, window3, window4, window5, window6, 
       window7, window8, window9, ciclos } = this.state;
+      console.log(this.state);
     if (pagina === 1) {
       return <AddPerfil1
         data={window1}

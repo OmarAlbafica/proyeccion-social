@@ -34,7 +34,7 @@ export default class AddPerfil2 extends Component {
 
 	onSubmit = () => {
 		const {asignaturas, alumnosM, alumnosF} = this.state;
-		if (asignaturas.length > 0 && alumnosM != "0" && alumnosF != "0") {
+		if (asignaturas.length > 0 && alumnosM !== "0" && alumnosF !== "0") {
 			this.props.onSubmit("window2", {
 				asignaturas: this.state.asignaturas,
 				alumnosM,
@@ -52,8 +52,7 @@ export default class AddPerfil2 extends Component {
 	render() {
 		const { facultades } = this.props;
 		const {facultad, escuela} = this.props;
-		console.log("state",this.state);
-		console.log("props",this.props);
+
 		return (
 			<div>
 				<div className="row">

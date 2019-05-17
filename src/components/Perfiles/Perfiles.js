@@ -6,61 +6,46 @@ import { firestoreConnect } from "react-redux-firebase";
 import PropTypes from "prop-types";
 import Spinner from "../layouts/Spinner";
 import classnames from "classnames";
+import { notifyUser } from "../../actions/notifyActions";
 
-class Clients extends Component {
+class Perfiles extends Component {
   state = {
     perfiles: []
   };
 
   toggle = () => this.setState({ open: !this.state.open });
 
-  static getDerivedStateFromProps(props, state) {
-    const { clients } = props;
+  componentDidMount() {
+    const { firestore } = this.props;
 
-    if (clients) {
-      // Add balances
-      const total = clients.reduce((total, client) => {
-        return total + parseFloat(client.balance.toString());
-      }, 0);
-      return { totalOwed: total };
-    }
-    return null;
+    firestore
+      .collection("perfiles")
+      .get()
+      .then(querySnapshot => {
+        const perfiles = querySnapshot.docs.map(doc => ({id: doc.id, data: doc.data()}));
+        this.setState({perfiles});
+      })
   }
 
+  borrarPerfil = id => {
+    const { history, firestore } = this.props;
+
+    firestore
+      .delete({ collection: "perfiles", doc: id })
+      .then(() => firestore
+      .collection("perfiles")
+      .get()
+      .then(querySnapshot => {
+        const perfiles = querySnapshot.docs.map(doc => ({id: doc.id, data: doc.data()}));
+        this.setState({perfiles});
+      }))
+  };
+
   render() {
-    const ejemplo = [
-      {
-        estado: "Pendiente",
-        facultad: "Informática y CA",
-        escuela: "Ciencias Aplicadas",
-        titulo: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo, earum rerum! Modi",
-        linea: "Arte y Arquitectura destilando amor"
-      },
-      {
-        estado: "Rechazado",
-        facultad: "Informática y CA",
-        escuela: "Ciencias Aplicadas",
-        titulo: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo, earum rerum! Modi",
-        linea: "Arte y Arquitectura destilando amor"
-      },
-      {
-        estado: "Aceptado",
-        facultad: "Informática y CA",
-        escuela: "Ciencias Aplicadas",
-        titulo: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo, earum rerum! Modi",
-        linea: "Arte y Arquitectura destilando amor"
-      },
-      {
-        estado: "Cambios solicitados",
-        cambios: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo, earum rerum! Modi Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo, earum rerum! Modi",
-        facultad: "Informática y CA",
-        escuela: "Ciencias Aplicadas",
-        titulo: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo, earum rerum! Modi",
-        linea: "Arte y Arquitectura destilando amor"
-      }
-    ]
-    const { perfiles } = this.props;
-    if (perfiles) {
+
+    const { perfiles } = this.state;
+
+    if (perfiles.length > 0) {
       return (
         <div className="row">
           <div className="col-md-6">
@@ -88,18 +73,18 @@ class Clients extends Component {
                 this.toggle()} */}
               {perfiles.length > 0 && perfiles.map((perfil, i) => (
                 <tr key={i}>
-                  {perfil.estado !== "Cambios solicitados" ?
+                  {perfil.data.estado !== "Cambios solicitados" ?
                     <td data-toggle="modal" data-target="#exampleModal"
                       className={classnames("alert", {
-                        "alert-success": perfil.estado === "Aceptado",
-                        "alert alert-dark": perfil.estado === "Pendiente",
-                        "alert-danger": perfil.estado === "Rechazado"
+                        "alert-success": perfil.data.estado === "Aceptado",
+                        "alert alert-dark": perfil.data.estado === "Pendiente",
+                        "alert-danger": perfil.data.estado === "Rechazado"
                       })}>
-                      {perfil.estado}
+                      {perfil.data.estado}
                     </td>
                     : <td data-toggle="modal" data-target="#exampleModal"
                       className="alert alert-warning" style={{ cursor: "pointer" }}>
-                      {perfil.estado} <br />
+                      {perfil.data.estado} <br />
                       (Click para ver)
                       <div className="modal fade text-primary" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div className="modal-dialog" role="document">
@@ -121,14 +106,14 @@ class Clients extends Component {
                       </div>
                     </td>}
                   <td>
-                    {perfil.facultad}
+                    {perfil.data.facultad}
                   </td>
-                  <td>{perfil.escuela}</td>
-                  <td>{perfil.titulo}</td>
-                  <td>{perfil.lineaProyeccion}</td>
+                  <td>{perfil.data.escuela}</td>
+                  <td>{perfil.data.titulo}</td>
+                  <td>{perfil.data.lineaProyeccion}</td>
                   <td>
                     <Link
-                      to={`/client/6`}
+                      to={`/perfiles/${perfil.id}/edit`}
                       className="btn btn-secondary btn-sm"
                     >
                       <i className="fas fa-arrow-circle-right" />
@@ -137,34 +122,32 @@ class Clients extends Component {
                     </Link>
                   </td>
                   <td>
-                    {perfil.estado === "Aceptado" ?
-                      <a
-                        href={`/perfiles/3453453236/solicitudes`}
-                        className="btn btn-info btn-sm"
-                      >
-                        <i className="fas fa-anchor"></i>
-                        <pre></pre>
-                        Solicitudes
-                    </a>
-                      :
-                      <div
-                        className="btn btn-sm"
-                      >
-                        <i className="fas fa-anchor"></i>
-                        <pre></pre>
-                        Solicitudes
-                      </div>
-                    }
+                    <Link
+                      to={`/perfiles/${perfil.id}/solicitudes`}
+                      className="btn btn-info btn-sm"
+                    >
+                      <i className="fas fa-anchor"></i>
+                      <pre></pre>
+                      Solicitudes
+                  </Link>
+                  {/* <div
+                      className="btn btn-sm"
+                    >
+                      <i className="fas fa-anchor"></i>
+                      <pre></pre>
+                      Solicitudes
+                    </div> */}
                   </td>
                   <td>
-                    <Link
-                      to={`/client/9`}
+                    <button
                       className="btn btn-danger btn-sm"
+                      onClick={() => this.borrarPerfil(perfil.id)}
+
                     >
                       <i className="fas fa-angle-double-down"></i>
                       <pre></pre>
                       Eliminar
-                    </Link>
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -178,14 +161,14 @@ class Clients extends Component {
   }
 }
 
-Clients.propTypes = {
+Perfiles.propTypes = {
   firestore: PropTypes.object.isRequired,
-  clients: PropTypes.array
 };
 
 export default compose(
-  firestoreConnect([{ collection: "perfiles" }]),
-  connect(({ firestore: { ordered } }, props) => ({
-    perfiles: ordered.perfiles
-  }))
-)(Clients);
+  firestoreConnect(),
+  connect((state, props) => ({
+    notify: state.notify,
+      settings: state.settings
+  }), { notifyUser })
+)(Perfiles);

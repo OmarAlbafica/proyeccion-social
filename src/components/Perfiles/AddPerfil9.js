@@ -17,7 +17,6 @@ export default class AddPerfil9 extends Component {
 
   onSubmit = () => {
     const {organizacionesAliadas, actoresClave} = this.state;
-    console.log(this.state);
     this.props.onSubmit("window9", {organizacionesAliadas, actoresClave});
     this.props.pagina(10);
   }

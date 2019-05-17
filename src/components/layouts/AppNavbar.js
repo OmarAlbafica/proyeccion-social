@@ -59,14 +59,19 @@ class AppNavbar extends Component {
               </ul>
               {isAuthenticated ? (
                 <ul className="navbar-nav ml-auto">
-                  <li className="nav-item">
+                  {/* <li className="nav-item">
                     <Link to="/facultades" className="nav-link">
                       Facultades
                     </Link>
+                  </li> */}
+                  <li className="nav-item">
+                    <Link to="/usuarios/nuevo" className="nav-link">
+                      Usuarios
+                    </Link>
                   </li>
                   <li className="nav-item">
-                    <Link to="/usuarios" className="nav-link">
-                      Usuarios
+                    <Link to="/linea-proyeccion/nuevo" className="nav-link">
+                      Linea de Proyección
                     </Link>
                   </li>
                   <li className="nav-item">
@@ -85,12 +90,7 @@ class AppNavbar extends Component {
                 <ul className="navbar-nav ml-auto">
                   <li className="nav-item">
                     <Link to="/login" className="nav-link">
-                      Login
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/register" className="nav-link">
-                      Register
+                      Iniciar Sesión
                     </Link>
                   </li>
                 </ul>
