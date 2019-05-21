@@ -9,12 +9,19 @@ import notifyReducer from "./reducers/notifyReducer";
 import settingsReducer from "./reducers/settingsReducer";
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
-  authDomain: process.env.REACT_APP_AUTHDOMAIN,
-  databaseURL: process.env.REACT_APP_DATABASE_URL,
-  projectId: process.env.REACT_APP_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_BUCKET,
-  messagingSenderId: process.env.REACT_APP_SENDER_ID
+  //apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
+  //authDomain: process.env.REACT_APP_AUTHDOMAIN,
+  //databaseURL: process.env.REACT_APP_DATABASE_URL,
+  //projectId: process.env.REACT_APP_PROJECT_ID,
+  //storageBucket: process.env.REACT_APP_BUCKET,
+  //messagingSenderId: process.env.REACT_APP_SENDER_ID
+  apiKey: "AIzaSyBBX9hiLyGj5VnWOCQFMVFTfLxejiNhtw0",
+    authDomain: "tour-utec-57cab.firebaseapp.com",
+    databaseURL: "https://tour-utec-57cab.firebaseio.com",
+    projectId: "tour-utec-57cab",
+    storageBucket: "tour-utec-57cab.appspot.com",
+    messagingSenderId: "689791494899",
+    appId: "1:689791494899:web:a2e911c4c2a83a6d"
 };
 
 // react-redux-firebase config
